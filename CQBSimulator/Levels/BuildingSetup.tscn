@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2w8dchvo6o6k"]
+
+[ext_resource type="PackedScene" uid="uid://byn1i84n2u4cd" path="res://Nodes/WorldEnvironment.tscn" id="1_0brr5"]
+[ext_resource type="Script" path="res://Scripts/buildingSetup.gd" id="1_3hri6"]
+[ext_resource type="Theme" uid="uid://c1m7qt4i4yj6k" path="res://Themes/Default.tres" id="3_646dc"]
+[ext_resource type="PackedScene" uid="uid://nxt0khoe0uxm" path="res://Ui/PauseMenu.tscn" id="4_7adkk"]
+
+[node name="BuildingSetup" type="Node3D"]
+script = ExtResource("1_3hri6")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
+projection = 1
+
+[node name="WorldEnvironment" parent="." instance=ExtResource("1_0brr5")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -209.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = 133.0
+grow_horizontal = 0
+theme = ExtResource("3_646dc")
+theme_override_font_sizes/font_size = 80
+text = "Save"
+
+[node name="PauseMenu" parent="." instance=ExtResource("4_7adkk")]

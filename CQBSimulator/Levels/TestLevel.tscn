@@ -1,20 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4dh0iy6e00e2"]
+[gd_scene load_steps=6 format=3 uid="uid://c4dh0iy6e00e2"]
 
 [ext_resource type="PackedScene" uid="uid://b32pjsqjemxxo" path="res://Nodes/Player.tscn" id="1_4li1o"]
+[ext_resource type="PackedScene" uid="uid://byn1i84n2u4cd" path="res://Nodes/WorldEnvironment.tscn" id="1_tedcs"]
 [ext_resource type="PackedScene" uid="uid://nxt0khoe0uxm" path="res://Ui/PauseMenu.tscn" id="2_3njw2"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_mgkbm"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-
-[sub_resource type="Sky" id="Sky_2iol8"]
-sky_material = SubResource("ProceduralSkyMaterial_mgkbm")
-
-[sub_resource type="Environment" id="Environment_c0thx"]
-background_mode = 2
-sky = SubResource("Sky_2iol8")
-tonemap_mode = 2
-glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_f6bm7"]
 
@@ -27,8 +15,7 @@ size = Vector3(54.728, 0.656738, 54.862)
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_c0thx")
+[node name="WorldEnvironment" parent="." instance=ExtResource("1_tedcs")]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.21488, -3.64579)
