@@ -38,4 +38,10 @@ func _on_restart_pressed():
 
 
 func _on_quit_pressed():
+	resume()
 	get_tree().quit()
+
+
+func _on_menu_pressed():
+	resume()
+	get_tree().change_scene_to_file("res://Ui/MainMenu.tscn")

@@ -66,6 +66,12 @@ theme = ExtResource("1_y4buv")
 theme_override_font_sizes/font_size = 80
 text = "Restart"
 
+[node name="Menu" type="Button" parent="Control/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_y4buv")
+theme_override_font_sizes/font_size = 80
+text = "Menu"
+
 [node name="Quit" type="Button" parent="Control/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_y4buv")
@@ -74,4 +80,5 @@ text = "Quit"
 
 [connection signal="pressed" from="Control/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Control/VBoxContainer/Menu" to="." method="_on_menu_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
