@@ -52,7 +52,7 @@ func _physics_process(delta):
 		else:
 			velocity.x = lerp(velocity.x, direction.x * speed, delta * 7.0)
 			velocity.z = lerp(velocity.z, direction.z * speed, delta * 7.0)
-	#else: #no movement mid-air obviously
+	#else: #no movement mid-airwa obviously
 		#velocity.x = lerp(velocity.x, direction.x * speed, delta * 3.0)
 		#velocity.z = lerp(velocity.z, direction.z * speed, delta * 3.0)
 	
