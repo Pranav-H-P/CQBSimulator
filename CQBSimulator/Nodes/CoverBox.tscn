@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmbomyfnm7c8h"]
+
+[ext_resource type="Texture2D" uid="uid://c0r6s52r2iiuy" path="res://Textures/kenney_prototype-textures/PNG/Purple/texture_01.png" id="1_hicqn"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ufbag"]
+albedo_texture = ExtResource("1_hicqn")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_tw5nn"]
+material = SubResource("StandardMaterial3D_ufbag")
+
+[node name="FoundationBox" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_tw5nn")

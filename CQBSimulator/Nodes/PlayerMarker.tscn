@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://gbgvfnybopv3"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ftfqm"]
+
+[node name="PlayerMarker" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_ftfqm")
