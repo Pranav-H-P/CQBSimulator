@@ -35,6 +35,7 @@ func loadMapData(mapName):
 func appendMapData(mapName,data):
 	var mapDat=readJson(mapPath)
 	mapDat[mapName]=data
+	saveJson(mapDat,mapPath)
 
 func _ready():
 	pass # Replace with function body.

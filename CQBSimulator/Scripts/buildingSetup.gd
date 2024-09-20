@@ -27,7 +27,7 @@ var currStage=0
 
 var currObj
 var currMousePos
-
+var rotationAngle=0
 
 var mapData={
 	"foundation":{
@@ -88,10 +88,17 @@ func _input(event):
 		
 		if len(objectBuffer)!=0:
 			draw=false
-			objectBuffer.back().queue_free()
-			objectBuffer.pop_back()
+			if currStage==2 or currStage==3:
+				draw=true
+				
+			if currStage==3:
+				draw=true
+				objectBuffer.pop_back()
+			else:
+				objectBuffer.back().queue_free()
+				objectBuffer.pop_back()
 			
-			if currStage==1 or currStage==5:
+			if currStage in [1,2,4,5]:
 				positionBuffer.pop_back()
 			
 				
@@ -104,7 +111,7 @@ func _input(event):
 		if currStage==0 and len(objectBuffer)==0:
 			draw=true
 			currObj=foundationBox.instantiate()
-			currObj.position.y=0
+			currObj.position.y=0.1
 			
 			currObj.position.x=startCoords[0]+0.5
 			currObj.position.z=startCoords[1]+0.5
@@ -115,17 +122,35 @@ func _input(event):
 		elif currStage==1:
 			draw=true
 			currObj=wallBox.instantiate()
-			currObj.position.y=0
+			currObj.position.y=0.2
 			
 			currObj.position.x=startCoords[0]+0.5
 			currObj.position.z=startCoords[1]+0.5
 			
 			add_child(currObj)
 			objectBuffer.append(currObj)
+		
+		elif currStage==2:
+			
+			positionBuffer.append({"startCoords":startCoords,"rotation":currObj.rotation.y})
+			objectBuffer.append(currObj)
+			currObj=door.instantiate()
+			currObj.freeze()
+			add_child(currObj)
+			
+			
+			
+		elif currStage==3 and len(objectBuffer)==0:
+			mapData["opStart"]={
+				"startCoords":startCoords				
+			}
+			objectBuffer.append(currObj)
+			draw=false
+		
 		elif currStage==4:
 			draw=true
 			currObj=enemyArea.instantiate()
-			currObj.position.y=0
+			currObj.position.y=0.2
 			
 			currObj.position.x=startCoords[0]+0.5
 			currObj.position.z=startCoords[1]+0.5
@@ -135,7 +160,7 @@ func _input(event):
 		elif currStage==5:
 			draw=true
 			currObj=coverBox.instantiate()
-			currObj.position.y=0
+			currObj.position.y=0.2
 			
 			currObj.position.x=startCoords[0]+0.5
 			currObj.position.z=startCoords[1]+0.5
@@ -163,19 +188,31 @@ func _input(event):
 			
 			
 		
-	if event.is_action_pressed("rightClick"):
-		pass
+	
 
 
 func _physics_process(delta):
-	#print(mapData)
+	
 	if draw:
 		currMousePos=get_point()
-		objectBuffer.back().position.x=startCoords[0]+(objectBuffer.back().scale.x)/2
-		objectBuffer.back().position.z=startCoords[1]+(objectBuffer.back().scale.z)/2
-		objectBuffer.back().scale.x=abs(startCoords[0]+0.5-currMousePos[0])
-		objectBuffer.back().scale.z=abs(startCoords[1]+0.5-currMousePos[1])
-	
+		if currStage in [0,1,4,5]:
+			
+			objectBuffer.back().position.x=startCoords[0]+(objectBuffer.back().scale.x)/2
+			objectBuffer.back().position.z=startCoords[1]+(objectBuffer.back().scale.z)/2
+			objectBuffer.back().scale.x=abs(startCoords[0]+0.5-currMousePos[0])
+			objectBuffer.back().scale.z=abs(startCoords[1]+0.5-currMousePos[1])
+		
+		elif currStage==2:
+			currObj.position.x=currMousePos[0]
+			currObj.position.z=currMousePos[1]
+			if Input.is_action_just_pressed("r"):
+		
+				currObj.rotation.y=deg_to_rad(rotationAngle)
+				rotationAngle=(rotationAngle+90)%360
+		elif currStage==3:
+			currObj.position.x=currMousePos[0]
+			currObj.position.z=currMousePos[1]
+			
 	var input_dir = Input.get_vector("a", "d", "w", "s")
 	
 	if Input.is_action_just_released("zoomIn"):
@@ -255,9 +292,9 @@ func _on_save_pressed():
 
 
 func _on_next_pressed():
-	var multiItemStage={1:"innerWalls",4:"enemy",5:"cover"}
+	var multiItemStage={1:"innerWalls",2:"doors",4:"enemy",5:"cover"}
 	
-	if (currStage in [1,4,5]):
+	if (currStage in [1,2,4,5]):
 		positionBuffer.pop_back()
 		objectBuffer.back().queue_free()
 		objectBuffer.pop_back()
@@ -274,3 +311,14 @@ func _on_next_pressed():
 	positionBuffer.clear()
 	print(mapData)
 	currStage+=1
+	
+	if currStage==2:
+		currObj=door.instantiate()
+		currObj.freeze()
+		add_child(currObj)
+		draw=true
+	elif currStage==3:
+		currObj=opStartPt.instantiate()
+		currObj.position.y=2
+		add_child(currObj)
+		draw=true

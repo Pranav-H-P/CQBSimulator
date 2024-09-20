@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://msoqisv35ra0"]
+[gd_scene load_steps=6 format=3 uid="uid://msoqisv35ra0"]
+
+[ext_resource type="Script" path="res://Nodes/door.gd" id="1_t1y6n"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hvdg2"]
 albedo_color = Color(0.664797, 0.321202, 0.0770604, 1)
@@ -10,7 +12,12 @@ size = Vector3(1, 2, 0.1)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4moy3"]
 points = PackedVector3Array(-0.5, -1, -0.05, -0.5, -1, 0.05, -0.5, 1, -0.05, 0.5, -1, -0.05, 0.5, -1, 0.05, -0.5, 1, 0.05, 0.5, 1, -0.05, 0.5, 1, 0.05)
 
+[sub_resource type="SphereMesh" id="SphereMesh_0d4ko"]
+radius = 0.08
+height = 0.1
+
 [node name="Hinge" type="Node3D"]
+script = ExtResource("1_t1y6n")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
@@ -25,3 +32,7 @@ mesh = SubResource("BoxMesh_v1prf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("ConvexPolygonShape3D_4moy3")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1.33741, 0, 0, 0, 1, 0.379138, 0, 0)
+mesh = SubResource("SphereMesh_0d4ko")
