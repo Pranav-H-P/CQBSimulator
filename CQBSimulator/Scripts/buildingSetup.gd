@@ -4,7 +4,6 @@ extends Node3D
 
 
 @onready var saveButton=$CanvasLayer/Control/Save
-@onready var backButton=$CanvasLayer/Control/Back
 @onready var statusBox=$CanvasLayer/Control/Status
 @onready var nextButton=$CanvasLayer/Control/Next
 @onready var inputBox=$CanvasLayer/Control/LineEdit
@@ -16,8 +15,12 @@ var foundationBox=preload("res://Nodes/FoundationBox.tscn")
 var wallBox=preload("res://Nodes/InnerWall.tscn")
 var coverBox=preload("res://Nodes/CoverBox.tscn")
 var opStartPt=preload("res://Nodes/PlayerMarker.tscn")
+var door=preload("res://Nodes/Door.tscn")
+var enemyArea=preload("res://Nodes/EnemyMarker.tscn")
 
-var buffer=[]
+var objectBuffer=[]
+var positionBuffer=[]
+
 var draw=false
 var startCoords
 var currStage=0
@@ -25,22 +28,20 @@ var currStage=0
 var currObj
 var currMousePos
 
-var placedObjs={
-	0:[],
-	1:[],
-	2:[],
-	3:[],
-	4:[],
-	5:[]
-	
-}
 
 var mapData={
 	"foundation":{
-		
+			#"startCoords":startCoords,
+			#"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]
 	},
 	"innerWalls":{
-		
+		#0:{#"startCoords":startCoords,
+			#"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]
+			#},
+		#1:{#"startCoords":startCoords,
+			#"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]
+			#},
+			
 	},
 	"doors":{
 		
@@ -49,10 +50,20 @@ var mapData={
 		
 	},
 	"enemy":{
-		
+		#0:{#"startCoords":startCoords,
+			#"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]
+			#},
+		#1:{#"startCoords":startCoords,
+			#"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]
+			#},
 	},
 	"cover":{
-		
+		#0:{#"startCoords":startCoords,
+			#"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]
+			#},
+		#1:{#"startCoords":startCoords,
+			#"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]
+			#},
 	}
 }
 
@@ -71,43 +82,26 @@ var stages={
 func _ready():
 	inputBox.visible=false
 
-func clear_stage():
-	
-	for i in placedObjs[currStage-1]:
-		i.queue_free()
-	placedObjs[currStage-1].clear()
-	
-	if currStage==1:
-		
-		mapData['foundation'].clear()
-		
-	elif currStage==2:
-		mapData['innerWalls'].clear()
-		
-	elif currStage==3:
-		mapData['doors'].clear()
-	elif currStage==4:
-		mapData['opStart'].clear()
-	elif currStage==5:
-		mapData['enemy'].clear()
-			
-	elif currStage==6:
-		mapData['cover'].clear()
-
 func _input(event):
 	
 	if event.is_action_pressed("z"):
-		if len(buffer)!=0:
+		
+		if len(objectBuffer)!=0:
 			draw=false
-			buffer.back().queue_free()
-			buffer.pop_back()
+			objectBuffer.back().queue_free()
+			objectBuffer.pop_back()
+			
+			if currStage==1 or currStage==5:
+				positionBuffer.pop_back()
+			
+				
 			
 	
 	if event.is_action_pressed("leftClick"):
 		startCoords=get_point()
 		
 		
-		if currStage==0 and len(buffer)==0:
+		if currStage==0 and len(objectBuffer)==0:
 			draw=true
 			currObj=foundationBox.instantiate()
 			currObj.position.y=0
@@ -116,8 +110,38 @@ func _input(event):
 			currObj.position.z=startCoords[1]+0.5
 			
 			add_child(currObj)
-			buffer.append(currObj)
+			objectBuffer.append(currObj)
+		
+		elif currStage==1:
+			draw=true
+			currObj=wallBox.instantiate()
+			currObj.position.y=0
 			
+			currObj.position.x=startCoords[0]+0.5
+			currObj.position.z=startCoords[1]+0.5
+			
+			add_child(currObj)
+			objectBuffer.append(currObj)
+		elif currStage==4:
+			draw=true
+			currObj=enemyArea.instantiate()
+			currObj.position.y=0
+			
+			currObj.position.x=startCoords[0]+0.5
+			currObj.position.z=startCoords[1]+0.5
+			
+			add_child(currObj)
+			objectBuffer.append(currObj)
+		elif currStage==5:
+			draw=true
+			currObj=coverBox.instantiate()
+			currObj.position.y=0
+			
+			currObj.position.x=startCoords[0]+0.5
+			currObj.position.z=startCoords[1]+0.5
+			
+			add_child(currObj)
+			objectBuffer.append(currObj)
 		
 	if event.is_action_released("leftClick"):
 		
@@ -126,9 +150,16 @@ func _input(event):
 			draw=false
 			mapData["foundation"]={
 				"startCoords":startCoords,
-				"size":[buffer.back().scale.x,buffer.back().scale.z	],
+				"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z	]
 				
 			}
+		
+			
+		elif (currStage in [1,4,5]) and draw==true:
+			draw=false
+			positionBuffer.append({"startCoords":startCoords,"size":[objectBuffer.back().scale.x,objectBuffer.back().scale.z]})
+				
+			
 			
 			
 		
@@ -140,10 +171,10 @@ func _physics_process(delta):
 	#print(mapData)
 	if draw:
 		currMousePos=get_point()
-		buffer.back().position.x=startCoords[0]+(buffer.back().scale.x)/2
-		buffer.back().position.z=startCoords[1]+(buffer.back().scale.z)/2
-		buffer.back().scale.x=abs(startCoords[0]+0.5-currMousePos[0])
-		buffer.back().scale.z=abs(startCoords[1]+0.5-currMousePos[1])
+		objectBuffer.back().position.x=startCoords[0]+(objectBuffer.back().scale.x)/2
+		objectBuffer.back().position.z=startCoords[1]+(objectBuffer.back().scale.z)/2
+		objectBuffer.back().scale.x=abs(startCoords[0]+0.5-currMousePos[0])
+		objectBuffer.back().scale.z=abs(startCoords[1]+0.5-currMousePos[1])
 	
 	var input_dir = Input.get_vector("a", "d", "w", "s")
 	
@@ -176,12 +207,11 @@ func get_point():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	print(mapData)
+	
 	statusBox.text=stages[currStage]
 	
 	
 	if currStage==0:
-		backButton.visible=false
 		inputBox.visible=false
 		saveButton.visible=false
 		
@@ -191,7 +221,6 @@ func _process(_delta):
 			nextButton.visible=false
 			
 	elif currStage==1:
-		backButton.visible=true
 		nextButton.visible=true
 		
 	elif currStage==2:
@@ -226,14 +255,22 @@ func _on_save_pressed():
 
 
 func _on_next_pressed():
+	var multiItemStage={1:"innerWalls",4:"enemy",5:"cover"}
+	
+	if (currStage in [1,4,5]):
+		positionBuffer.pop_back()
+		objectBuffer.back().queue_free()
+		objectBuffer.pop_back()
+		var count=0
+		for i in positionBuffer:
+			
+			mapData[multiItemStage[currStage]][count]=i
+			
+			count+=1
 	
 	
-	for i in buffer:
-		placedObjs[currStage].append(i)
-	buffer.clear()
+	objectBuffer.clear()
+	
+	positionBuffer.clear()
+	print(mapData)
 	currStage+=1
-
-func _on_back_pressed():
-	
-	clear_stage()
-	currStage-=1

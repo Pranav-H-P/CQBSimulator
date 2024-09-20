@@ -3,8 +3,8 @@
 2. Make the weapons creation thing
 
 for map creation thing
-- Make the camera movable
-- figure out block placing guide things
+-add doors,player spawn
+-make sure it reconstructs properly
 
 
 
