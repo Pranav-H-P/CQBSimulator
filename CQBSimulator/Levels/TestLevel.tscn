@@ -1,10 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4dh0iy6e00e2"]
+[gd_scene load_steps=8 format=3 uid="uid://c4dh0iy6e00e2"]
 
 [ext_resource type="PackedScene" uid="uid://b32pjsqjemxxo" path="res://Nodes/Player.tscn" id="1_4li1o"]
 [ext_resource type="PackedScene" uid="uid://byn1i84n2u4cd" path="res://Nodes/WorldEnvironment.tscn" id="1_tedcs"]
 [ext_resource type="PackedScene" uid="uid://nxt0khoe0uxm" path="res://Ui/PauseMenu.tscn" id="2_3njw2"]
+[ext_resource type="Texture2D" uid="uid://cfxu32ssnwf4" path="res://Textures/kenney_prototype-textures/PNG/Red/texture_02.png" id="2_clhru"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c5we2"]
+albedo_texture = ExtResource("2_clhru")
+uv1_scale = Vector3(27, 27, 27)
+uv1_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_f6bm7"]
+lightmap_size_hint = Vector2i(14, 21)
+material = SubResource("StandardMaterial3D_c5we2")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kda0a"]
 size = Vector3(54.728, 0.656738, 54.862)
@@ -18,7 +26,7 @@ shadow_enabled = true
 [node name="WorldEnvironment" parent="." instance=ExtResource("1_tedcs")]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.21488, -3.64579)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.533157, 0.668406, -3.55299)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 

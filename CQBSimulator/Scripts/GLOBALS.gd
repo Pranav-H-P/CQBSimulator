@@ -2,12 +2,12 @@ extends Node
 
 
 
-var currMap={}
+var currMapName
 var mapPath="user://mapData.save"
 
 var weaponPath="users://weapons.save"
-var currLoadout={}
-var currEnemyLoad={}
+var currLoadoutName
+var currEnemyLoadName
 
 func saveJson(content,path):
 	var file = FileAccess.open(path,FileAccess.WRITE)
@@ -27,6 +27,14 @@ func readJson(path):
 		return {}
 	
 	return json.data
+
+func loadMapData(mapName):
+	var mapDat=readJson(mapPath)
+	return mapDat[mapName]
+	
+func appendMapData(mapName,data):
+	var mapDat=readJson(mapPath)
+	mapDat[mapName]=data
 
 func _ready():
 	pass # Replace with function body.

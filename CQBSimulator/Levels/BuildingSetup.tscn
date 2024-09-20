@@ -1,16 +1,35 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2w8dchvo6o6k"]
+[gd_scene load_steps=10 format=3 uid="uid://b2w8dchvo6o6k"]
 
 [ext_resource type="PackedScene" uid="uid://byn1i84n2u4cd" path="res://Nodes/WorldEnvironment.tscn" id="1_0brr5"]
 [ext_resource type="Script" path="res://Scripts/buildingSetup.gd" id="1_3hri6"]
+[ext_resource type="Script" path="res://Scripts/mapBuilderCam.gd" id="2_owut1"]
 [ext_resource type="Theme" uid="uid://c1m7qt4i4yj6k" path="res://Themes/Default.tres" id="3_646dc"]
 [ext_resource type="PackedScene" uid="uid://nxt0khoe0uxm" path="res://Ui/PauseMenu.tscn" id="4_7adkk"]
+[ext_resource type="Texture2D" uid="uid://cfxu32ssnwf4" path="res://Textures/kenney_prototype-textures/PNG/Red/texture_02.png" id="6_g6cbg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1tchu"]
+albedo_texture = ExtResource("6_g6cbg")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_h6lcb"]
+lightmap_size_hint = Vector2i(14, 21)
+material = SubResource("StandardMaterial3D_1tchu")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gwa8v"]
+size = Vector3(54.728, 0.656738, 54.862)
 
 [node name="BuildingSetup" type="Node3D"]
 script = ExtResource("1_3hri6")
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.893312, -0.448592, -0.0275579, -0.0273417, -0.00696014, 0.999602, -0.448605, 0.89371, -0.00604769, 0, 13.0424, 0)
+shadow_enabled = true
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8, 0)
-projection = 1
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 18.3564, 0)
+script = ExtResource("2_owut1")
 
 [node name="WorldEnvironment" parent="." instance=ExtResource("1_0brr5")]
 
@@ -23,19 +42,107 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Control"]
+[node name="Save" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -209.0
-offset_top = 30.0
-offset_right = -30.0
-offset_bottom = 133.0
+offset_left = -249.0
+offset_top = 56.0
+offset_right = -70.0
+offset_bottom = 159.0
 grow_horizontal = 0
 theme = ExtResource("3_646dc")
 theme_override_font_sizes/font_size = 80
 text = "Save"
 
+[node name="Next" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -248.0
+offset_top = -163.0
+offset_right = -69.0
+offset_bottom = -60.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_646dc")
+theme_override_font_sizes/font_size = 80
+text = "Next
+"
+
+[node name="Back" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -248.0
+offset_top = -289.0
+offset_right = -69.0
+offset_bottom = -186.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_646dc")
+theme_override_font_sizes/font_size = 80
+text = "Back
+"
+
+[node name="Status" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -906.0
+offset_top = 62.0
+offset_right = 412.0
+offset_bottom = 210.0
+grow_horizontal = 2
+theme = ExtResource("3_646dc")
+theme_override_font_sizes/font_size = 80
+text = "Stage"
+autowrap_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -368.0
+offset_top = -158.0
+offset_right = 423.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_646dc")
+theme_override_font_sizes/font_size = 80
+placeholder_text = "Enter Map Name"
+
 [node name="PauseMenu" parent="." instance=ExtResource("4_7adkk")]
+visible = false
+autoLockMouse = false
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(54.9062, 0, 0, 0, 0.309206, 0, 0, 0, 54.9062, 0, 0, 0)
+mesh = SubResource("BoxMesh_h6lcb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0246887, -0.171631, -0.0148163)
+shape = SubResource("BoxShape3D_gwa8v")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.533157, 0.668406, -3.55299)
+
+[connection signal="pressed" from="CanvasLayer/Control/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/Back" to="." method="_on_back_pressed"]
