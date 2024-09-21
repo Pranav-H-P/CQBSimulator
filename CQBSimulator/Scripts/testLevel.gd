@@ -30,8 +30,8 @@ func _ready():
 	
 	add_child(outerWall1)
 	add_child(outerWall2)
-	#add_child(outerWall3)
-	#add_child(outerWall4)
+	add_child(outerWall3)
+	add_child(outerWall4)
 	#add_child(ceiling)
 	
 	var foundationPos=mapData["foundation"]["startCoords"]
@@ -41,7 +41,7 @@ func _ready():
 		[foundationPos[0],foundationPos[1]],
 		[foundationPos[0],foundationPos[1]],
 		[foundationPos[0]+foundationSize[0],foundationPos[1]],
-		[foundationPos[0],foundationPos[1]+foundationSize[0]]
+		[foundationPos[0],foundationPos[1]+foundationSize[1]]
 	]
 	var outerWallSizes=[
 		[0.1,foundationSize[1]],
@@ -53,8 +53,8 @@ func _ready():
 	
 	outerWall1.place(outerWallPositions[0],0,outerWallSizes[0],wallHeight)
 	outerWall2.place(outerWallPositions[1],0,outerWallSizes[1],wallHeight)
-	#outerWall3.place(outerWallPositions[2],0,outerWallSizes[2],wallHeight)
-	#outerWall4.place(outerWallPositions[3],0,outerWallSizes[3],wallHeight)
+	outerWall3.place(outerWallPositions[2],0,outerWallSizes[2],wallHeight)
+	outerWall4.place(outerWallPositions[3],0,outerWallSizes[3],wallHeight)
 	
 	#ceiling.place(foundationPos,wallHeight,foundationSize,1)
 	

@@ -1,7 +1,6 @@
 extends StaticBody3D
 
 @onready var mesh=$MeshInstance3D
-@onready var colliders=$CollisionShape3D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -12,7 +11,7 @@ func _process(delta):
 	pass
 
 func place(posXZ,posY,scaleXZ,scaleY):
-	colliders.disabled=true
+	
 	
 	position.x=posXZ[0]+scaleXZ[0]/2
 	position.y=posY+scaleY/2
@@ -22,8 +21,9 @@ func place(posXZ,posY,scaleXZ,scaleY):
 	mesh.scale.y=scaleY
 	mesh.scale.z=scaleXZ[1]
 	
-	colliders.shape.extents=Vector3(scaleXZ[0]/2,scaleY/2,scaleXZ[1]/2)
+	mesh.create_trimesh_collision()
 	
-	colliders.disabled=false
+	
+	
 	
 	
