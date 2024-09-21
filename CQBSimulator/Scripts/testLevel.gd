@@ -8,7 +8,7 @@ var door=preload("res://Nodes/Door.tscn")
 var genericCube=preload("res://Nodes/GenericCube.tscn")
 
 var wallHeight=7
-var coverHeight=1
+var coverHeight=1.5
 
 var levelData
 var mapData
