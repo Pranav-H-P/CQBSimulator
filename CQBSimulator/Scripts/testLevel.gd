@@ -7,7 +7,8 @@ extends Node3D
 var door=preload("res://Nodes/Door.tscn")
 var genericCube=preload("res://Nodes/GenericCube.tscn")
 
-var wallHeight=8
+var wallHeight=7
+var coverHeight=2
 
 var levelData
 var mapData
@@ -58,7 +59,32 @@ func _ready():
 	
 	#ceiling.place(foundationPos,wallHeight,foundationSize,1)
 	
+	var doorData=mapData["doors"]
 	
+	var currObj
+	for i in doorData.values():
+		currObj=door.instantiate()
+		
+		add_child(currObj)
+		currObj.place(i["startCoords"],1,i["rotation"])
+	
+	
+	var wallData=mapData["innerWalls"]
+	
+	for i in wallData.values():
+		currObj=genericCube.instantiate()
+		
+		add_child(currObj)
+		currObj.place(i["startCoords"],0,i["size"],wallHeight)
+	
+	var coverData=mapData["cover"]
+	
+	for i in coverData.values():
+		currObj=genericCube.instantiate()
+		
+		add_child(currObj)
+		currObj.place(i["startCoords"],0,i["size"],coverHeight)
+		
 	
 	var playerStart=mapData["opStart"]["startCoords"]
 	

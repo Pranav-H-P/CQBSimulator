@@ -111,6 +111,7 @@ visible = false
 autoLockMouse = false
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(6.13385, 0, 0, 0, 1, 0, 0, 0, 6.13385, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 transform = Transform3D(54.9062, 0, 0, 0, 0.309206, 0, 0, 0, 54.9062, 0, 0, 0)

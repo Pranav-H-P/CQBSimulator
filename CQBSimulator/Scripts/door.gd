@@ -1,5 +1,8 @@
 extends Node3D
 
+@onready var animPlayer=$door/AnimationPlayer
+
+var open=false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,5 +13,17 @@ func _ready():
 func _process(delta):
 	pass
 
-func freeze():
-	$RigidBody3D.freeze=true
+
+	
+func place(posXZ,posY,rot):
+	position.x=posXZ[0]
+	position.y=posY
+	position.z=posXZ[1]
+	rotation.y=rot
+	
+func toggle():
+	if open:
+		animPlayer.play_backwards("open")
+	else:
+		animPlayer.play("open")
+	open=!open

@@ -17,7 +17,7 @@ var gravity = 15
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
-
+@onready var interactRay=$Head/interactionRay
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -31,6 +31,14 @@ func _unhandled_input(event):
 
 
 func _physics_process(delta):
+	
+	
+	if Input.is_action_just_pressed("e") and interactRay.is_colliding():
+		var obj=interactRay.get_collider()
+		
+		if obj.is_in_group("door"):
+			
+			obj.get_parent().toggle()
 	
 	if not is_on_floor():
 		velocity.y -= gravity * delta

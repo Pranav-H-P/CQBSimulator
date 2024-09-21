@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://msoqisv35ra0"]
+[gd_scene load_steps=9 format=3 uid="uid://msoqisv35ra0"]
 
 [ext_resource type="Script" path="res://Scripts/door.gd" id="1_t1y6n"]
 
@@ -7,32 +7,69 @@ albedo_color = Color(0.664797, 0.321202, 0.0770604, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_v1prf"]
 material = SubResource("StandardMaterial3D_hvdg2")
-size = Vector3(1, 2, 0.1)
+size = Vector3(2, 4, 0.1)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_4moy3"]
-points = PackedVector3Array(-0.5, -1, -0.05, -0.5, -1, 0.05, -0.5, 1, -0.05, 0.5, -1, -0.05, 0.5, -1, 0.05, -0.5, 1, 0.05, 0.5, 1, -0.05, 0.5, 1, 0.05)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_lw4si"]
+data = PackedVector3Array(-1, 2, 0.05, 1, 2, 0.05, -1, -2, 0.05, 1, 2, 0.05, 1, -2, 0.05, -1, -2, 0.05, 1, 2, -0.05, -1, 2, -0.05, 1, -2, -0.05, -1, 2, -0.05, -1, -2, -0.05, 1, -2, -0.05, 1, 2, 0.05, 1, 2, -0.05, 1, -2, 0.05, 1, 2, -0.05, 1, -2, -0.05, 1, -2, 0.05, -1, 2, -0.05, -1, 2, 0.05, -1, -2, -0.05, -1, 2, 0.05, -1, -2, 0.05, -1, -2, -0.05, 1, 2, 0.05, -1, 2, 0.05, 1, 2, -0.05, -1, 2, 0.05, -1, 2, -0.05, 1, 2, -0.05, -1, -2, 0.05, 1, -2, 0.05, -1, -2, -0.05, 1, -2, 0.05, 1, -2, -0.05, -1, -2, -0.05)
 
 [sub_resource type="SphereMesh" id="SphereMesh_0d4ko"]
-radius = 0.08
-height = 0.1
+radius = 0.1
+height = 0.2
 
-[node name="Hinge" type="Node3D"]
+[sub_resource type="Animation" id="Animation_pa085"]
+resource_name = "open"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_58vmo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ud4ex"]
+_data = {
+"RESET": SubResource("Animation_58vmo"),
+"open": SubResource("Animation_pa085")
+}
+
+[node name="Hinge" type="Node3D" groups=["door"]]
 script = ExtResource("1_t1y6n")
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
-axis_lock_linear_x = true
-axis_lock_linear_y = true
-axis_lock_linear_z = true
-axis_lock_angular_x = true
-axis_lock_angular_z = true
+[node name="door" type="StaticBody3D" parent="." groups=["door"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="door"]
 mesh = SubResource("BoxMesh_v1prf")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-shape = SubResource("ConvexPolygonShape3D_4moy3")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="door"]
+shape = SubResource("ConcavePolygonShape3D_lw4si")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1.33741, 0, 0, 0, 1, 0.379138, 0, 0)
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="door"]
+transform = Transform3D(1, 0, 0, 0, 1.33741, 0, 0, 0, 1, 0.778789, 0.114458, 1.74693e-08)
 mesh = SubResource("SphereMesh_0d4ko")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="door"]
+libraries = {
+"": SubResource("AnimationLibrary_ud4ex")
+}
