@@ -43,6 +43,10 @@ func appendMapData(mapName,data):
 
 func setLevelData(mapName):
 	currMapName=mapName
+
+func loadGunData():
+	var gunDat=readJson(weaponPath)
+	return gunDat
 	
 
 func getCurrLevelData():
