@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://nxt0khoe0uxm" path="res://Ui/PauseMenu.tscn" id="4_7adkk"]
 [ext_resource type="Texture2D" uid="uid://bim2wtt8bnpol" path="res://Textures/kenney_prototype-textures/PNG/Red/texture_01.png" id="5_pec1r"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1tchu"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2rhlu"]
 albedo_texture = ExtResource("5_pec1r")
 uv1_scale = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
@@ -14,7 +14,7 @@ uv1_world_triplanar = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_h6lcb"]
 lightmap_size_hint = Vector2i(14, 21)
-material = SubResource("StandardMaterial3D_1tchu")
+material = SubResource("StandardMaterial3D_2rhlu")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gwa8v"]
 size = Vector3(54.728, 0.656738, 54.862)

@@ -111,7 +111,7 @@ func _input(event):
 		if currStage==0 and len(objectBuffer)==0:
 			draw=true
 			currObj=foundationBox.instantiate()
-			currObj.position.y=0.1
+			currObj.position.y=0
 			
 			currObj.position.x=startCoords[0]+0.5
 			currObj.position.z=startCoords[1]+0.5

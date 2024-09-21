@@ -31,11 +31,22 @@ func readJson(path):
 func loadMapData(mapName):
 	var mapDat=readJson(mapPath)
 	return mapDat[mapName]
-	
+
+func loadMapList():
+	var mapDat=readJson(mapPath)
+	return mapDat.keys()
+
 func appendMapData(mapName,data):
 	var mapDat=readJson(mapPath)
 	mapDat[mapName]=data
 	saveJson(mapDat,mapPath)
 
+func setLevelData(mapName):
+	currMapName=mapName
+	
+
+func getCurrLevelData():
+	return {"MapData":loadMapData(currMapName)}
+	
 func _ready():
 	pass # Replace with function body.
