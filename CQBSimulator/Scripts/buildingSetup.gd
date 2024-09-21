@@ -135,7 +135,7 @@ func _input(event):
 			positionBuffer.append({"startCoords":startCoords,"rotation":currObj.rotation.y})
 			objectBuffer.append(currObj)
 			currObj=door.instantiate()
-			
+			currObj.freeze()
 			add_child(currObj)
 			
 			
@@ -314,7 +314,7 @@ func _on_next_pressed():
 	
 	if currStage==1:
 		currObj=door.instantiate()
-		
+		currObj.freeze()
 		add_child(currObj)
 		draw=true
 	elif currStage==3:

@@ -14,7 +14,8 @@ func _process(delta):
 	pass
 
 
-	
+func freeze():
+	$door/CollisionShape3D.disabled=true
 func place(posXZ,posY,rot):
 	position.x=posXZ[0]
 	position.y=posY

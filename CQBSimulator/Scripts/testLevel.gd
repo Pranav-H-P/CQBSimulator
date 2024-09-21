@@ -8,7 +8,7 @@ var door=preload("res://Nodes/Door.tscn")
 var genericCube=preload("res://Nodes/GenericCube.tscn")
 
 var wallHeight=7
-var coverHeight=2
+var coverHeight=1
 
 var levelData
 var mapData
@@ -66,7 +66,7 @@ func _ready():
 		currObj=door.instantiate()
 		
 		add_child(currObj)
-		currObj.place(i["startCoords"],1,i["rotation"])
+		currObj.place(i["startCoords"],0,i["rotation"])
 	
 	
 	var wallData=mapData["innerWalls"]

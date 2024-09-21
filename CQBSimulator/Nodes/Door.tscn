@@ -57,7 +57,7 @@ _data = {
 script = ExtResource("1_t1y6n")
 
 [node name="door" type="StaticBody3D" parent="." groups=["door"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.00273, 2, 2.19752e-08)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="door"]
 mesh = SubResource("BoxMesh_v1prf")
