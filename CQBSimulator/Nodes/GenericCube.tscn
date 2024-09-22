@@ -9,3 +9,5 @@ script = ExtResource("1_vbxx4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_jmfkt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
