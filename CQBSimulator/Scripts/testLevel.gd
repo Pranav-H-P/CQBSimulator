@@ -16,7 +16,7 @@ var mapData
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	#uiTab.visible=true
+	uiTab.visible=true
 	
 	levelData=GLOBALS.getCurrLevelData()
 	mapData=levelData["MapData"]
@@ -89,7 +89,14 @@ func _ready():
 	var playerStart=mapData["opStart"]["startCoords"]
 	
 	player.position=Vector3(playerStart[0],3,playerStart[1])
+	
+	uiAnim.play("fadeOut")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+
+func _on_animation_player_current_animation_changed(name):
+	if name=="fadeOut":
+		uiTab.visible=false

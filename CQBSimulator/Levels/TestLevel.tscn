@@ -121,3 +121,5 @@ mesh = SubResource("BoxMesh_6ctrs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_2ole2")
+
+[connection signal="current_animation_changed" from="LevelUI/UITab/AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

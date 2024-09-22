@@ -69,7 +69,6 @@ theme_override_font_sizes/font_size = 80
 text = "Quit"
 
 [node name="SimStart" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -122,6 +121,7 @@ theme_override_constants/separation = 150
 
 [node name="PlayerData" type="VBoxContainer" parent="SimStart/HBox"]
 layout_mode = 2
+theme_override_constants/separation = 30
 
 [node name="PlayerLabel" type="Label" parent="SimStart/HBox/PlayerData"]
 layout_mode = 2
@@ -129,18 +129,81 @@ theme = ExtResource("1_h72p8")
 theme_override_font_sizes/font_size = 70
 text = "Operator Settings"
 
+[node name="Weapon1" type="HBoxContainer" parent="SimStart/HBox/PlayerData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SimStart/HBox/PlayerData/Weapon1"]
+layout_mode = 2
+theme = ExtResource("1_h72p8")
+theme_override_font_sizes/font_size = 60
+text = "Weapon 1: "
+
+[node name="Options" type="OptionButton" parent="SimStart/HBox/PlayerData/Weapon1"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+
+[node name="Weapon2" type="HBoxContainer" parent="SimStart/HBox/PlayerData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SimStart/HBox/PlayerData/Weapon2"]
+layout_mode = 2
+theme = ExtResource("1_h72p8")
+theme_override_font_sizes/font_size = 60
+text = "Weapon 2: "
+
+[node name="Options" type="OptionButton" parent="SimStart/HBox/PlayerData/Weapon2"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+
 [node name="VSeparator" type="VSeparator" parent="SimStart/HBox"]
 layout_mode = 2
 theme_override_constants/separation = 150
 
 [node name="EnemyData" type="VBoxContainer" parent="SimStart/HBox"]
 layout_mode = 2
+theme_override_constants/separation = 30
 
 [node name="EnemyLabel" type="Label" parent="SimStart/HBox/EnemyData"]
 layout_mode = 2
 theme = ExtResource("1_h72p8")
 theme_override_font_sizes/font_size = 70
 text = "Adversary Settings"
+
+[node name="Reset" type="Button" parent="SimStart/HBox/EnemyData"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+text = "Reset"
+
+[node name="AddWeapons" type="HBoxContainer" parent="SimStart/HBox/EnemyData"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Options" type="OptionButton" parent="SimStart/HBox/EnemyData/AddWeapons"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+
+[node name="LineEdit" type="LineEdit" parent="SimStart/HBox/EnemyData/AddWeapons"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+placeholder_text = "Count"
+max_length = 2
+
+[node name="Add" type="Button" parent="SimStart/HBox/EnemyData/AddWeapons"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+text = "Add"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SimStart"]
+layout_mode = 2
+offset_left = 1300.0
+offset_top = 567.0
+offset_right = 1884.0
+offset_bottom = 922.0
+
+[node name="EnemyList" type="VBoxContainer" parent="SimStart/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
 
 [node name="Back" type="Button" parent="SimStart"]
 layout_mode = 1
@@ -177,6 +240,7 @@ theme_override_font_sizes/font_size = 80
 text = "Start"
 
 [node name="Armory" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -465,6 +529,8 @@ one_shot = true
 [connection signal="pressed" from="Main/VBoxContainer/MapSetUp" to="." method="_on_map_set_up_pressed"]
 [connection signal="pressed" from="Main/VBoxContainer/ArmorySetup" to="." method="_on_armory_setup_pressed"]
 [connection signal="pressed" from="Main/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="SimStart/HBox/EnemyData/Reset" to="." method="_on_enemy_list_reset_pressed"]
+[connection signal="pressed" from="SimStart/HBox/EnemyData/AddWeapons/Add" to="." method="_on_add_enemy_weapons_pressed"]
 [connection signal="pressed" from="SimStart/Back" to="." method="_on_SimStart_back_pressed"]
 [connection signal="pressed" from="SimStart/Start" to="." method="_on_sim_start_pressed"]
 [connection signal="pressed" from="Armory/Back" to="." method="_on_armory_back_pressed"]

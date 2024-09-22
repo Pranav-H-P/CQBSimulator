@@ -3,6 +3,9 @@ extends Node
 
 
 var currMapName
+var currPlayerData
+var currEnemyData
+
 var mapPath="user://mapData.save"
 
 var weaponPath="user://weapons.save"
@@ -38,13 +41,19 @@ func loadMapList():
 	var mapDat=readJson(mapPath)
 	return mapDat.keys()
 
+func loadGunList():
+	var gunDat=readJson(weaponPath)
+	return gunDat.keys()
+
 func appendMapData(mapName,data):
 	var mapDat=readJson(mapPath)
 	mapDat[mapName]=data
 	saveJson(mapDat,mapPath)
 
-func setLevelData(mapName):
+func setLevelData(mapName,playerData,enemyData):
 	currMapName=mapName
+	currPlayerData=playerData
+	currEnemyData=enemyData
 
 func loadGunData():
 	var gunDat=readJson(weaponPath)
@@ -57,7 +66,11 @@ func storeGunData(gunName,data):
 	saveJson(gunDat,weaponPath)
 
 func getCurrLevelData():
-	return {"MapData":loadMapData(currMapName)}
+	return {
+		"MapData":loadMapData(currMapName),
+		"PlayerData":currPlayerData,
+		"EnemyData":currEnemyData
+		}
 	
 func _ready():
 	pass # Replace with function body.

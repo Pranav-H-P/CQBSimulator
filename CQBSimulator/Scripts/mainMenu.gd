@@ -10,6 +10,15 @@ extends CanvasLayer
 @onready var uiTimer=$UITimer
 @onready var gunModel=$Armory/WeaponSetUp/VBoxContainer/model/ModelOptions
 @onready var fireType=$Armory/WeaponSetUp/VBoxContainer/firetype/FireOptions
+@onready var playerWP1=$SimStart/HBox/PlayerData/Weapon1/Options
+@onready var playerWP2=$SimStart/HBox/PlayerData/Weapon2/Options
+@onready var enemyWP=$SimStart/HBox/EnemyData/AddWeapons/Options
+@onready var enemyList=$SimStart/ScrollContainer/EnemyList
+@onready var enemyWeaponCount=$SimStart/HBox/EnemyData/AddWeapons/LineEdit
+@onready var smallTheme=preload("res://Themes/DefaultSmall.tres")
+
+
+var enemyTypeData=[]
 
 # Called when the node enters the scene tree for the first time.
 
@@ -20,6 +29,11 @@ func _ready():
 	
 	for i in GLOBALS.loadMapList():
 		mapOptions.add_item(i)
+	
+	for i in GLOBALS.loadGunList():
+		playerWP1.add_item(i)
+		playerWP2.add_item(i)
+		enemyWP.add_item(i)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -50,7 +64,13 @@ func _on_SimStart_back_pressed():
 
 
 func _on_sim_start_pressed():
-	GLOBALS.setLevelData(mapOptions.get_item_text(mapOptions.get_selected_id()))
+	
+	var playerData={}
+	
+	playerData["Weapon1"]=playerWP1.get_item_text(playerWP1.get_selected_id())
+	playerData["Weapon2"]=playerWP2.get_item_text(playerWP2.get_selected_id())
+	
+	GLOBALS.setLevelData(mapOptions.get_item_text(mapOptions.get_selected_id()),playerData,enemyTypeData)
 	get_tree().change_scene_to_file("res://Levels/TestLevel.tscn")
 
 
@@ -103,3 +123,20 @@ func _on_save_weapon_pressed():
 	
 func _on_ui_timer_timeout():
 	armoryLabel.text="Armory Setup"
+
+
+func _on_enemy_list_reset_pressed():
+	for i in enemyList.get_children():
+		i.queue_free()
+
+
+func _on_add_enemy_weapons_pressed():
+	var t=enemyWeaponCount.text.strip_edges()
+	if len(t)!=0 and t.is_valid_int():
+		
+		var labl=Label.new()
+		labl.text=enemyWP.get_item_text(enemyWP.get_selected_id())+" - "+t
+		labl.theme=smallTheme
+		enemyList.add_child(labl)
+		
+		enemyTypeData.append([enemyWP.get_item_text(enemyWP.get_selected_id()),int(t)])
