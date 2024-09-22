@@ -16,7 +16,8 @@ extends CanvasLayer
 @onready var enemyList=$SimStart/ScrollContainer/EnemyList
 @onready var enemyWeaponCount=$SimStart/HBox/EnemyData/AddWeapons/LineEdit
 @onready var smallTheme=preload("res://Themes/DefaultSmall.tres")
-
+@onready var bullets1=$SimStart/HBox/PlayerData/Bullets1/LineEdit
+@onready var bullets2=$SimStart/HBox/PlayerData/Bullets2/LineEdit
 
 var enemyTypeData=[]
 
@@ -67,9 +68,15 @@ func _on_sim_start_pressed():
 	var playerData={}
 	var allWeaponDat=GLOBALS.loadGunData()
 	
+	var b1=bullets1.text.strip_edges()
+	var b2=bullets2.text.strip_edges()
+	
+	if len(b1)==0 or len(b2)==0 or !b1.is_valid_int() or !b2.is_valid_int():
+		return
+	
 	playerData["Weapon1"]=allWeaponDat[playerWP1.get_item_text(playerWP1.get_selected_id())]
 	playerData["Weapon2"]=allWeaponDat[playerWP2.get_item_text(playerWP2.get_selected_id())]
-	
+	playerData["Bullets"]=[int(b1),int(b2)]
 	GLOBALS.setLevelData(mapOptions.get_item_text(mapOptions.get_selected_id()),playerData,enemyTypeData)
 	get_tree().change_scene_to_file("res://Levels/TestLevel.tscn")
 
@@ -120,6 +127,10 @@ func _on_save_weapon_pressed():
 	GLOBALS.storeGunData(gunName,gunData)
 	armoryLabel.text="Preset Saved Successfully"
 	uiTimer.start()
+	playerWP1.clear()
+	playerWP2.clear()
+	enemyWP.clear()
+	
 	for i in GLOBALS.loadGunList():
 		playerWP1.add_item(i)
 		playerWP2.add_item(i)

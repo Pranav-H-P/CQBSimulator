@@ -15,13 +15,21 @@ var projSpeed=0
 var reloadTime=1
 var volume=1
 
+var posRetSpeed=30
+var rotRetSpeed=10
+
 var triggerDown=false
 var parentName=""
 
-@onready var bullet=preload("res://Nodes/bullet.tscn")
+
+
 var muzzle
 var model
 
+var defaultPos
+var defaultRotation
+
+@onready var bullet=preload("res://Nodes/bullet.tscn")
 @onready var world=get_parent().get_parent()
 @onready var fireTimer=$FireTimer
 @onready var gunShot=$GunShot
@@ -48,6 +56,8 @@ func initialize(data):
 		model=$Pistol
 		muzzle=$Pistol/Muzzle
 	
+	defaultPos=model.position
+	defaultRotation=model.rotation
 	model.visible=true
 	
 	if data["FireOptions"]=="Automatic":
@@ -70,38 +80,61 @@ func initialize(data):
 	projSpeed=data["ProjSpeed"]
 	reloadTime=data["ReloadTime"]
 	volume=data["Volume"]
-	print(fireTimer.wait_time)
+
+func applyRecoil():
+	model.position.z+=GLOBALS.RNG.randf_range(0,vRecoil/1000)
+	model.position.y+=GLOBALS.RNG.randf_range(0,vRecoil/1000)
+	model.rotation_degrees.y+=GLOBALS.RNG.randf_range(0,vRecoil)
+	model.rotation_degrees.x+=GLOBALS.RNG.randf_range(-hRecoil,hRecoil)
+
+func fire():
+	
+	if pelletCount==1:
+		newBullet=bullet.instantiate()
+		newBullet.avoid=parentName
+		world.add_child(newBullet)
+		newBullet.global_position=muzzle.global_position
+		newBullet.look_at(muzzle.get_collision_point(),Vector3.UP)
+		newBullet.vel=projSpeed
+		newBullet.mass=bulletMass
+		newBullet.fired=true
+	else:
+		var pelletSpread=muzzle.get_collision_point()
+		var dist=abs(muzzle.position.distance_to(pelletSpread))
+		
+		for i in range(pelletCount):
+			newBullet=bullet.instantiate()
+			newBullet.avoid=parentName
+			world.add_child(newBullet)
+			newBullet.global_position=muzzle.global_position
+			pelletSpread.y+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(vSpread))),dist*(tan(deg_to_rad(vSpread))))
+			pelletSpread.x+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(hSpread))),dist*(tan(deg_to_rad(hSpread))))
+			newBullet.look_at(pelletSpread,Vector3.UP)
+			newBullet.vel=projSpeed
+			newBullet.mass=bulletMass
+			newBullet.fired=true
+			
+	applyRecoil()
+	
+	gunShot.play()
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	if triggerDown and muzzle.is_colliding():
 		if fireType==0:#auto
 			if fireTimer.is_stopped():
 				
-				newBullet=bullet.instantiate()
-				newBullet.avoid=parentName
-				world.add_child(newBullet)
-				newBullet.global_position=muzzle.global_position
-				newBullet.look_at(muzzle.get_collision_point(),Vector3.UP)
-				
-				
-				newBullet.vel=projSpeed
-				newBullet.mass=bulletMass
-				newBullet.fired=true
+				fire()
 				fireTimer.start()
-				gunShot.play()
+			else:
+				model.position=model.position.lerp(defaultPos,delta*posRetSpeed)
+				model.rotation=model.rotation.lerp(defaultRotation,delta*rotRetSpeed)
 		else:
 			
-			gunShot.play()
-			newBullet=bullet.instantiate()
-			newBullet.avoid=parentName
-			world.add_child(newBullet)
-			newBullet.global_position=muzzle.global_position
-			newBullet.look_at(muzzle.get_collision_point(),Vector3.UP)
+			fire()
 			
-			
-			newBullet.vel=projSpeed
-			newBullet.mass=bulletMass
-			newBullet.fired=true
 			triggerDown=false
 	else:
 		fireTimer.stop()
+		model.position=model.position.lerp(defaultPos,delta*posRetSpeed)
+		model.rotation=model.rotation.lerp(defaultRotation,delta*rotRetSpeed)

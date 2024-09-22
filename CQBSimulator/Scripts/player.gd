@@ -18,14 +18,21 @@ var weaponData
 var currWeapon=null
 
 var bulletCount=[0,0]
+var pistolADSPos=Vector3(0,-0.038,-0.197)
+var rifleADSPos=Vector3(0,-0.095,-0.197)
+var gunADSPos=rifleADSPos
+var adsSpeed=30
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
 @onready var interactRay=$Head/Camera3D/interactionRay
 @onready var gun=$Head/Camera3D/Rifle
 
+@onready var gunHipPos=Vector3(0.562,-0.313,-0.554)
+
 func _ready():
 	gun.parentName="player"
+	gun.position=gunHipPos
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 
@@ -40,14 +47,28 @@ func _physics_process(delta):
 	if currWeapon==null:
 		currWeapon=1
 		gun.initialize(weaponData["Weapon1"])
-		
+	
+	if Input.is_action_pressed("rightClick"):
+		gun.position=gun.position.lerp(gunADSPos,delta*adsSpeed)
+	else:
+		gun.position=gun.position.lerp(gunHipPos,delta*adsSpeed)
+	
 	if Input.is_action_just_pressed("1"):
-		print("switcthing")
+		
+		if weaponData["Weapon1"]["ModelOptions"]=="Pistol":
+			gunADSPos=pistolADSPos
+		else:
+			gunADSPos=rifleADSPos
 		gun.initialize(weaponData["Weapon1"])
 		#gun.reload(bulletCount[0])
 		
 	if Input.is_action_just_pressed("2"):
-		print("switcthing")
+		
+		if weaponData["Weapon2"]["ModelOptions"]=="Pistol":
+			gunADSPos=pistolADSPos
+		else:
+			gunADSPos=rifleADSPos
+			
 		gun.initialize(weaponData["Weapon2"])
 		#gun.reload(bulletCount[1])
 	

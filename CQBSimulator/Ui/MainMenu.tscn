@@ -117,7 +117,7 @@ theme = ExtResource("3_6l7a7")
 
 [node name="VSeparator2" type="VSeparator" parent="SimStart/HBox"]
 layout_mode = 2
-theme_override_constants/separation = 150
+theme_override_constants/separation = 30
 
 [node name="PlayerData" type="VBoxContainer" parent="SimStart/HBox"]
 layout_mode = 2
@@ -142,6 +142,21 @@ text = "Weapon 1: "
 layout_mode = 2
 theme = ExtResource("3_6l7a7")
 
+[node name="Bullets1" type="HBoxContainer" parent="SimStart/HBox/PlayerData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SimStart/HBox/PlayerData/Bullets1"]
+layout_mode = 2
+theme = ExtResource("1_h72p8")
+theme_override_font_sizes/font_size = 60
+text = "Bullets: "
+
+[node name="LineEdit" type="LineEdit" parent="SimStart/HBox/PlayerData/Bullets1"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+placeholder_text = "Count"
+max_length = 5
+
 [node name="Weapon2" type="HBoxContainer" parent="SimStart/HBox/PlayerData"]
 layout_mode = 2
 
@@ -155,9 +170,24 @@ text = "Weapon 2: "
 layout_mode = 2
 theme = ExtResource("3_6l7a7")
 
+[node name="Bullets2" type="HBoxContainer" parent="SimStart/HBox/PlayerData"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SimStart/HBox/PlayerData/Bullets2"]
+layout_mode = 2
+theme = ExtResource("1_h72p8")
+theme_override_font_sizes/font_size = 60
+text = "Bullets: "
+
+[node name="LineEdit" type="LineEdit" parent="SimStart/HBox/PlayerData/Bullets2"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+placeholder_text = "Count"
+max_length = 5
+
 [node name="VSeparator" type="VSeparator" parent="SimStart/HBox"]
 layout_mode = 2
-theme_override_constants/separation = 150
+theme_override_constants/separation = 30
 
 [node name="EnemyData" type="VBoxContainer" parent="SimStart/HBox"]
 layout_mode = 2

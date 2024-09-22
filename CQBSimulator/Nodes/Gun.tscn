@@ -9,14 +9,16 @@
 script = ExtResource("1_wtowt")
 
 [node name="Rifle" parent="." instance=ExtResource("2_nn2dh")]
+visible = false
 
 [node name="Rifle_Battle_West" parent="Rifle/Rifle_Battle_West_Rig/Skeleton3D" index="0"]
 cast_shadow = 0
 
 [node name="Muzzle" type="RayCast3D" parent="Rifle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010473, -0.441347)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0927234, -0.303783)
 target_position = Vector3(0, 0, -1000)
 debug_shape_custom_color = Color(0.647059, 0, 0, 1)
+debug_shape_thickness = 1
 
 [node name="Pistol" parent="." instance=ExtResource("3_blojv")]
 
@@ -25,9 +27,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.063227)
 cast_shadow = 0
 
 [node name="Muzzle" type="RayCast3D" parent="Pistol"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0258396, -0.0730286)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.033448, -0.0730286)
 target_position = Vector3(0, 0, -10000)
 debug_shape_custom_color = Color(0.943558, 0, 0.34426, 1)
+debug_shape_thickness = 1
 
 [node name="FireTimer" type="Timer" parent="."]
 one_shot = true

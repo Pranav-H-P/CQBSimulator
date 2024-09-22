@@ -1,0 +1,125 @@
+[gd_scene load_steps=13 format=3 uid="uid://c4dh0iy6e00e2"]
+
+[ext_resource type="PackedScene" uid="uid://b32pjsqjemxxo" path="res://Nodes/Player.tscn" id="1_4li1o"]
+[ext_resource type="Script" path="res://Scripts/testLevel.gd" id="1_os654"]
+[ext_resource type="PackedScene" uid="uid://byn1i84n2u4cd" path="res://Nodes/WorldEnvironment.tscn" id="1_tedcs"]
+[ext_resource type="PackedScene" uid="uid://nxt0khoe0uxm" path="res://Ui/PauseMenu.tscn" id="2_3njw2"]
+[ext_resource type="Theme" uid="uid://c1m7qt4i4yj6k" path="res://Themes/Default.tres" id="6_uiuhc"]
+[ext_resource type="Texture2D" uid="uid://bim2wtt8bnpol" path="res://Textures/kenney_prototype-textures/PNG/Red/texture_01.png" id="6_w4k5y"]
+
+[sub_resource type="Animation" id="Animation_yhkxt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_sf14j"]
+resource_name = "fadeOut"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5ddcr"]
+_data = {
+"RESET": SubResource("Animation_yhkxt"),
+"fadeOut": SubResource("Animation_sf14j")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1tchu"]
+albedo_texture = ExtResource("6_w4k5y")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_6ctrs"]
+lightmap_size_hint = Vector2i(14, 21)
+material = SubResource("StandardMaterial3D_1tchu")
+size = Vector3(500, 0.4, 500)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fd7a0"]
+size = Vector3(500, 0.4, 500)
+
+[node name="TestLevel" type="Node3D"]
+script = ExtResource("1_os654")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" parent="." instance=ExtResource("1_tedcs")]
+
+[node name="Player" parent="." instance=ExtResource("1_4li1o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6933, 2.88201, -24.0359)
+
+[node name="PauseMenu" parent="." instance=ExtResource("2_3njw2")]
+
+[node name="LevelUI" type="CanvasLayer" parent="."]
+
+[node name="UITab" type="Control" parent="LevelUI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="ColorRect" type="ColorRect" parent="LevelUI/UITab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Loading" type="Label" parent="LevelUI/UITab"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.5
+offset_top = -71.0
+offset_right = 214.5
+offset_bottom = 71.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_uiuhc")
+text = "Loading Simulation..."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="LevelUI/UITab"]
+libraries = {
+"": SubResource("AnimationLibrary_5ddcr")
+}
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_6ctrs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_fd7a0")
+
+[connection signal="current_animation_changed" from="LevelUI/UITab/AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]

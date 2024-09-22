@@ -1,7 +1,6 @@
 extends Node
 
-
-
+var RNG
 var currMapName
 var currPlayerData
 var currEnemyData
@@ -75,4 +74,5 @@ func getCurrLevelData():
 		}
 	
 func _ready():
-	pass # Replace with function body.
+	RNG= RandomNumberGenerator.new()
+	RNG.randomize()
