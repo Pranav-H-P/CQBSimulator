@@ -498,7 +498,7 @@ theme = ExtResource("1_h72p8")
 theme_override_font_sizes/font_size = 70
 text = "Audio Volume:  "
 
-[node name="volume" type="LineEdit" parent="Armory/WeaponSetUp/VBoxContainer/audio volume"]
+[node name="Volume" type="LineEdit" parent="Armory/WeaponSetUp/VBoxContainer/audio volume"]
 layout_mode = 2
 theme = ExtResource("3_6l7a7")
 placeholder_text = "dB"

@@ -12,6 +12,7 @@ func _process(delta):
 
 func place(posXZ,posY,scaleXZ,scaleY):
 	
+	var newCol=CollisionShape3D.new()
 	
 	position.x=posXZ[0]+scaleXZ[0]/2
 	position.y=posY+scaleY/2
@@ -21,7 +22,7 @@ func place(posXZ,posY,scaleXZ,scaleY):
 	mesh.scale.y=scaleY
 	mesh.scale.z=scaleXZ[1]
 	
-	mesh.create_trimesh_collision()
+	
 	
 	
 	

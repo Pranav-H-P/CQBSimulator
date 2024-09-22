@@ -9,7 +9,7 @@ var currEnemyData
 var mapPath="user://mapData.save"
 
 var weaponPath="user://weapons.save"
-var currLoadoutName
+var currLoadout
 var currEnemyLoadName
 
 func saveJson(content,path):
@@ -43,6 +43,7 @@ func loadMapList():
 
 func loadGunList():
 	var gunDat=readJson(weaponPath)
+	
 	return gunDat.keys()
 
 func appendMapData(mapName,data):
@@ -51,6 +52,7 @@ func appendMapData(mapName,data):
 	saveJson(mapDat,mapPath)
 
 func setLevelData(mapName,playerData,enemyData):
+	
 	currMapName=mapName
 	currPlayerData=playerData
 	currEnemyData=enemyData

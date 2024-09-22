@@ -19,8 +19,11 @@ func _ready():
 	uiTab.visible=true
 	
 	levelData=GLOBALS.getCurrLevelData()
+	
 	mapData=levelData["MapData"]
 	
+	
+	player.weaponData=levelData["PlayerData"]
 	
 	var outerWall1 = genericCube.instantiate()
 	var outerWall2 = genericCube.instantiate()

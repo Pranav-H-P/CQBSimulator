@@ -29,7 +29,6 @@ func _ready():
 	
 	for i in GLOBALS.loadMapList():
 		mapOptions.add_item(i)
-	
 	for i in GLOBALS.loadGunList():
 		playerWP1.add_item(i)
 		playerWP2.add_item(i)
@@ -66,9 +65,10 @@ func _on_SimStart_back_pressed():
 func _on_sim_start_pressed():
 	
 	var playerData={}
+	var allWeaponDat=GLOBALS.loadGunData()
 	
-	playerData["Weapon1"]=playerWP1.get_item_text(playerWP1.get_selected_id())
-	playerData["Weapon2"]=playerWP2.get_item_text(playerWP2.get_selected_id())
+	playerData["Weapon1"]=allWeaponDat[playerWP1.get_item_text(playerWP1.get_selected_id())]
+	playerData["Weapon2"]=allWeaponDat[playerWP2.get_item_text(playerWP2.get_selected_id())]
 	
 	GLOBALS.setLevelData(mapOptions.get_item_text(mapOptions.get_selected_id()),playerData,enemyTypeData)
 	get_tree().change_scene_to_file("res://Levels/TestLevel.tscn")
@@ -120,7 +120,10 @@ func _on_save_weapon_pressed():
 	GLOBALS.storeGunData(gunName,gunData)
 	armoryLabel.text="Preset Saved Successfully"
 	uiTimer.start()
-	
+	for i in GLOBALS.loadGunList():
+		playerWP1.add_item(i)
+		playerWP2.add_item(i)
+		enemyWP.add_item(i)
 func _on_ui_timer_timeout():
 	armoryLabel.text="Armory Setup"
 

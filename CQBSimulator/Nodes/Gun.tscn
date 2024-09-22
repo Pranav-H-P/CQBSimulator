@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://l0lci7vh8o5p"]
+
+[ext_resource type="Script" path="res://Scripts/rifle.gd" id="1_wtowt"]
+[ext_resource type="PackedScene" uid="uid://bbs0lre55ja1f" path="res://Models/Rifle_Battle_West.glb" id="2_nn2dh"]
+[ext_resource type="PackedScene" uid="uid://bmhfbgeuis7hx" path="res://Models/Pistol_Full_West.glb" id="3_blojv"]
+[ext_resource type="AudioStream" uid="uid://bl3wybikgad1k" path="res://Audio/556 Single Isolated WAV.wav" id="4_jmlg1"]
+
+[node name="Gun" type="Node3D"]
+script = ExtResource("1_wtowt")
+
+[node name="Rifle" parent="." instance=ExtResource("2_nn2dh")]
+
+[node name="Rifle_Battle_West" parent="Rifle/Rifle_Battle_West_Rig/Skeleton3D" index="0"]
+cast_shadow = 0
+
+[node name="Muzzle" type="RayCast3D" parent="Rifle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.010473, -0.441347)
+target_position = Vector3(0, 0, -1000)
+debug_shape_custom_color = Color(0.647059, 0, 0, 1)
+
+[node name="Pistol" parent="." instance=ExtResource("3_blojv")]
+
+[node name="Pistol_Full_West" parent="Pistol/Pistol_Full_West_Rig/Skeleton3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.063227)
+cast_shadow = 0
+
+[node name="Muzzle" type="RayCast3D" parent="Pistol"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0258396, -0.0730286)
+target_position = Vector3(0, 0, -10000)
+debug_shape_custom_color = Color(0.943558, 0, 0.34426, 1)
+
+[node name="FireTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="GunShot" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_jmlg1")
+
+[editable path="Rifle"]
+[editable path="Pistol"]

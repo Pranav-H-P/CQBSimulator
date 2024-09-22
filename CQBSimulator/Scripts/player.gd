@@ -14,14 +14,20 @@ const BASE_FOV = 90.0
 const FOV_CHANGE = 0.5
 
 var gravity = 15
+var weaponData
+var currWeapon=null
+
+var bulletCount=[0,0]
 
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
-@onready var interactRay=$Head/interactionRay
+@onready var interactRay=$Head/Camera3D/interactionRay
+@onready var gun=$Head/Camera3D/Rifle
 
 func _ready():
+	gun.parentName="player"
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
+	
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
@@ -31,7 +37,25 @@ func _unhandled_input(event):
 
 
 func _physics_process(delta):
+	if currWeapon==null:
+		currWeapon=1
+		gun.initialize(weaponData["Weapon1"])
+		
+	if Input.is_action_just_pressed("1"):
+		print("switcthing")
+		gun.initialize(weaponData["Weapon1"])
+		#gun.reload(bulletCount[0])
+		
+	if Input.is_action_just_pressed("2"):
+		print("switcthing")
+		gun.initialize(weaponData["Weapon2"])
+		#gun.reload(bulletCount[1])
 	
+	if Input.is_action_just_pressed('leftClick'):
+		
+		gun.triggerDown=true
+	if Input.is_action_just_released('leftClick'):
+		gun.triggerDown=false
 	
 	if Input.is_action_just_pressed("e") and interactRay.is_colliding():
 		var obj=interactRay.get_collider()
