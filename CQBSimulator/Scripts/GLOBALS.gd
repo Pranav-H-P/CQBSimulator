@@ -5,12 +5,14 @@ extends Node
 var currMapName
 var mapPath="user://mapData.save"
 
-var weaponPath="users://weapons.save"
+var weaponPath="user://weapons.save"
 var currLoadoutName
 var currEnemyLoadName
 
 func saveJson(content,path):
+	
 	var file = FileAccess.open(path,FileAccess.WRITE)
+	
 	file.store_line(JSON.stringify(content))
 	file.close()
 	
@@ -47,7 +49,12 @@ func setLevelData(mapName):
 func loadGunData():
 	var gunDat=readJson(weaponPath)
 	return gunDat
+
+func storeGunData(gunName,data):
+	var gunDat=loadGunData()
+	gunDat[gunName]=data
 	
+	saveJson(gunDat,weaponPath)
 
 func getCurrLevelData():
 	return {"MapData":loadMapData(currMapName)}

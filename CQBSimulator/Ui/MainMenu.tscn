@@ -275,24 +275,6 @@ popup/item_0/text = "Automatic"
 popup/item_1/text = "Semi Automatic"
 popup/item_1/id = 1
 
-[node name="projectile" type="HBoxContainer" parent="Armory/WeaponSetUp/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label1" type="Label" parent="Armory/WeaponSetUp/VBoxContainer/projectile"]
-layout_mode = 2
-theme = ExtResource("1_h72p8")
-theme_override_font_sizes/font_size = 70
-text = "Projectile Type: "
-
-[node name="ProjectileOptions" type="OptionButton" parent="Armory/WeaponSetUp/VBoxContainer/projectile"]
-layout_mode = 2
-theme = ExtResource("3_6l7a7")
-selected = 0
-item_count = 2
-popup/item_0/text = "Single"
-popup/item_1/text = "Pellet"
-popup/item_1/id = 1
-
 [node name="firerate" type="HBoxContainer" parent="Armory/WeaponSetUp/VBoxContainer"]
 layout_mode = 2
 
@@ -475,6 +457,10 @@ theme = ExtResource("1_h72p8")
 theme_override_font_sizes/font_size = 80
 text = "Save"
 
+[node name="UITimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="pressed" from="Main/VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="Main/VBoxContainer/MapSetUp" to="." method="_on_map_set_up_pressed"]
 [connection signal="pressed" from="Main/VBoxContainer/ArmorySetup" to="." method="_on_armory_setup_pressed"]
@@ -483,3 +469,4 @@ text = "Save"
 [connection signal="pressed" from="SimStart/Start" to="." method="_on_sim_start_pressed"]
 [connection signal="pressed" from="Armory/Back" to="." method="_on_armory_back_pressed"]
 [connection signal="pressed" from="Armory/Save" to="." method="_on_save_weapon_pressed"]
+[connection signal="timeout" from="UITimer" to="." method="_on_ui_timer_timeout"]
