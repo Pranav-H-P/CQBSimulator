@@ -8,7 +8,7 @@ var currEnemyData
 var mapPath="user://mapData.save"
 
 var weaponPath="user://weapons.save"
-var currLoadout
+
 var currEnemyLoadName
 
 func saveJson(content,path):

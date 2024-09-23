@@ -92,6 +92,7 @@ func _ready():
 	var playerStart=mapData["opStart"]["startCoords"]
 	
 	player.position=Vector3(playerStart[0],3,playerStart[1])
+	player.initialWeaponSetup(player.weaponData["Bullets"])
 	
 	uiAnim.play("fadeOut")
 

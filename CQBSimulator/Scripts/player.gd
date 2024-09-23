@@ -15,7 +15,6 @@ const FOV_CHANGE = 0.5
 
 var gravity = 15
 var weaponData
-var currWeapon=null
 
 var bulletCount=[0,0]
 var pistolADSPos=Vector3(0,-0.038,-0.197)
@@ -42,11 +41,13 @@ func _unhandled_input(event):
 		camera.rotate_x(-event.relative.y * SENSITIVITY)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-70), deg_to_rad(60))
 
+func initialWeaponSetup(bCount):
+	gun.initialize(weaponData["Weapon1"],0,bCount)
 
 func _physics_process(delta):
-	if currWeapon==null:
-		currWeapon=1
-		gun.initialize(weaponData["Weapon1"])
+	
+	if Input.is_action_just_pressed('r'):
+		gun.reload()
 	
 	if Input.is_action_pressed("rightClick"):
 		gun.position=gun.position.lerp(gunADSPos,delta*adsSpeed)
@@ -59,8 +60,8 @@ func _physics_process(delta):
 			gunADSPos=pistolADSPos
 		else:
 			gunADSPos=rifleADSPos
-		gun.initialize(weaponData["Weapon1"])
-		#gun.reload(bulletCount[0])
+		gun.initialize(weaponData["Weapon1"],0)
+		
 		
 	if Input.is_action_just_pressed("2"):
 		
@@ -69,14 +70,17 @@ func _physics_process(delta):
 		else:
 			gunADSPos=rifleADSPos
 			
-		gun.initialize(weaponData["Weapon2"])
-		#gun.reload(bulletCount[1])
+		gun.initialize(weaponData["Weapon2"],1)
+		
 	
 	if Input.is_action_just_pressed('leftClick'):
-		
+		print("currMag: ",gun.bCurrCount)
 		gun.triggerDown=true
 	if Input.is_action_just_released('leftClick'):
 		gun.triggerDown=false
+		
+		
+		
 	
 	if Input.is_action_just_pressed("e") and interactRay.is_colliding():
 		var obj=interactRay.get_collider()

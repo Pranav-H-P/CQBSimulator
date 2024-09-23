@@ -17,15 +17,18 @@ var volume=1
 
 var posRetSpeed=30
 var rotRetSpeed=10
+var wNo=0
 
 var triggerDown=false
 var parentName=""
 
 
-
+var bTotalCount=[0,0]
+var bCurrCount=[0,0]
 var muzzle
 var model
-
+var switchTime=1
+var switching=false
 var defaultPos
 var defaultRotation
 
@@ -33,20 +36,40 @@ var defaultRotation
 @onready var world=get_parent().get_parent()
 @onready var fireTimer=$FireTimer
 @onready var gunShot=$GunShot
+@onready var reloadTimer=$ReloadTimer
+@onready var reloadStart=$ReloadStart
+@onready var reloadEnd=$ReloadEnd
+@onready var emptySound=$Empty
+@onready var switchTimer=$SwitchTimer
 
 var newBullet
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	switchTimer.wait_time=switchTime
 
-func reload(left):
-	currMag=max(0,(left-magSize))
-
-func initialize(data):
+func reload():
+	if parentName=="player":
+		if !switching:
+			reloadTimer.start()
+			reloadStart.play()
+	else:
+		reloadTimer.start()
+		reloadStart.play()
 	
+	
+		
+func initialize(data,w=null,totalCount=null):
+	switchTimer.start()
+	switching=true
 	$Rifle.visible=false
 	$Pistol.visible=false
+	
+	if parentName=="player":#its the player
+		wNo=w
+	
+	if totalCount!=null:
+		bTotalCount=totalCount
 	
 	if data["ModelOptions"]=="Rifle":
 		model=$Rifle
@@ -58,7 +81,7 @@ func initialize(data):
 	
 	defaultPos=model.position
 	defaultRotation=model.rotation
-	model.visible=true
+	
 	
 	if data["FireOptions"]=="Automatic":
 		fireType=0
@@ -81,6 +104,8 @@ func initialize(data):
 	reloadTime=data["ReloadTime"]
 	volume=data["Volume"]
 
+	reloadTimer.wait_time=reloadTime+GLOBALS.RNG.randf_range(-0.1,0.1)
+
 func applyRecoil():
 	model.position.z+=GLOBALS.RNG.randf_range(0,vRecoil/1000)
 	model.position.y+=GLOBALS.RNG.randf_range(0,vRecoil/1000)
@@ -89,37 +114,78 @@ func applyRecoil():
 
 func fire():
 	
-	if pelletCount==1:
-		newBullet=bullet.instantiate()
-		newBullet.avoid=parentName
-		world.add_child(newBullet)
-		newBullet.global_position=muzzle.global_position
-		newBullet.look_at(muzzle.get_collision_point(),Vector3.UP)
-		newBullet.vel=projSpeed
-		newBullet.mass=bulletMass
-		newBullet.fired=true
-	else:
-		var pelletSpread=muzzle.get_collision_point()
-		var dist=abs(muzzle.position.distance_to(pelletSpread))
+	if parentName=="player" :
 		
-		for i in range(pelletCount):
-			newBullet=bullet.instantiate()
-			newBullet.avoid=parentName
-			world.add_child(newBullet)
-			newBullet.global_position=muzzle.global_position
-			pelletSpread.y+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(vSpread))),dist*(tan(deg_to_rad(vSpread))))
-			pelletSpread.x+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(hSpread))),dist*(tan(deg_to_rad(hSpread))))
-			newBullet.look_at(pelletSpread,Vector3.UP)
-			newBullet.vel=projSpeed
-			newBullet.mass=bulletMass
-			newBullet.fired=true
+		if bCurrCount[wNo]>0 and !switching:
+			bCurrCount[wNo]-=1
+			if pelletCount==1:
+				newBullet=bullet.instantiate()
+				newBullet.avoid=parentName
+				world.add_child(newBullet)
+				newBullet.global_position=muzzle.global_position
+				newBullet.look_at(muzzle.get_collision_point(),Vector3.UP)
+				newBullet.vel=projSpeed
+				newBullet.mass=bulletMass
+				newBullet.fired=true
+			else:
+				var pelletSpread=muzzle.get_collision_point()
+				var dist=abs(muzzle.position.distance_to(pelletSpread))
+				
+				for i in range(pelletCount):
+					newBullet=bullet.instantiate()
+					newBullet.avoid=parentName
+					world.add_child(newBullet)
+					newBullet.global_position=muzzle.global_position
+					pelletSpread.y+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(vSpread))),dist*(tan(deg_to_rad(vSpread))))
+					pelletSpread.x+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(hSpread))),dist*(tan(deg_to_rad(hSpread))))
+					newBullet.look_at(pelletSpread,Vector3.UP)
+					newBullet.vel=projSpeed
+					newBullet.mass=bulletMass
+					newBullet.fired=true
+					
+			applyRecoil()
 			
-	applyRecoil()
-	
-	gunShot.play()
-	
+			gunShot.play()
+		elif !switching:
+			emptySound.play()
+	else:
+		if currMag>0:
+			currMag-=1
+			if pelletCount==1:
+				newBullet=bullet.instantiate()
+				newBullet.avoid=parentName
+				world.add_child(newBullet)
+				newBullet.global_position=muzzle.global_position
+				newBullet.look_at(muzzle.get_collision_point(),Vector3.UP)
+				newBullet.vel=projSpeed
+				newBullet.mass=bulletMass
+				newBullet.fired=true
+			else:
+				var pelletSpread=muzzle.get_collision_point()
+				var dist=abs(muzzle.position.distance_to(pelletSpread))
+				
+				for i in range(pelletCount):
+					newBullet=bullet.instantiate()
+					newBullet.avoid=parentName
+					world.add_child(newBullet)
+					newBullet.global_position=muzzle.global_position
+					pelletSpread.y+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(vSpread))),dist*(tan(deg_to_rad(vSpread))))
+					pelletSpread.x+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(hSpread))),dist*(tan(deg_to_rad(hSpread))))
+					newBullet.look_at(pelletSpread,Vector3.UP)
+					newBullet.vel=projSpeed
+					newBullet.mass=bulletMass
+					newBullet.fired=true
+					
+			applyRecoil()
+			
+			gunShot.play()
+		else:
+			emptySound.play()
+			
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	
 	if triggerDown and muzzle.is_colliding():
 		if fireType==0:#auto
 			if fireTimer.is_stopped():
@@ -138,3 +204,26 @@ func _physics_process(delta):
 		fireTimer.stop()
 		model.position=model.position.lerp(defaultPos,delta*posRetSpeed)
 		model.rotation=model.rotation.lerp(defaultRotation,delta*rotRetSpeed)
+
+
+func _on_reload_timer_timeout():
+	reloadEnd.play()
+	print("Reloading Weapon: ",wNo," magsize: ",magSize)
+	reloadTimer.wait_time=reloadTime+GLOBALS.RNG.randf_range(-0.1,0.1)
+	if parentName=="player":
+		var temp
+		if bTotalCount[wNo]-magSize>=0:
+			temp=magSize
+		else:
+			temp=max(0,bTotalCount[wNo])
+		bTotalCount[wNo]-=temp
+		bCurrCount[wNo]=temp
+		print("Current Mags: ",bCurrCount)
+		
+	else:
+		currMag=magSize
+
+
+func _on_switch_timer_timeout():
+	model.visible=true
+	switching=false
