@@ -1,7 +1,8 @@
 extends Node3D
 
-@onready var uiTab=$LevelUI/UITab
+@onready var loadingBlock=$LevelUI/UITab/ColorRect
 @onready var uiAnim=$LevelUI/UITab/AnimationPlayer
+@onready var timesShot=$LevelUI/UITab/TimesShot
 @onready var player=$Player
 
 var door=preload("res://Nodes/Door.tscn")
@@ -9,14 +10,17 @@ var genericCube=preload("res://Nodes/GenericCube.tscn")
 
 var wallHeight=7
 var coverHeight=1.5
-
 var levelData
 var mapData
+var ts=0
+
+func updateShot():
+	timesShot.text="Times Shot: "+str(ts)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	uiTab.visible=true
+	loadingBlock.visible=true
 	
 	levelData=GLOBALS.getCurrLevelData()
 	
@@ -103,4 +107,4 @@ func _process(delta):
 
 func _on_animation_player_current_animation_changed(name):
 	if name=="fadeOut":
-		uiTab.visible=false
+		loadingBlock.visible=false

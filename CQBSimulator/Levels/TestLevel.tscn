@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://c4dh0iy6e00e2"]
+[gd_scene load_steps=14 format=3 uid="uid://c4dh0iy6e00e2"]
 
 [ext_resource type="PackedScene" uid="uid://b32pjsqjemxxo" path="res://Nodes/Player.tscn" id="1_4li1o"]
 [ext_resource type="Script" path="res://Scripts/testLevel.gd" id="1_os654"]
 [ext_resource type="PackedScene" uid="uid://byn1i84n2u4cd" path="res://Nodes/WorldEnvironment.tscn" id="1_tedcs"]
 [ext_resource type="PackedScene" uid="uid://nxt0khoe0uxm" path="res://Ui/PauseMenu.tscn" id="2_3njw2"]
+[ext_resource type="Theme" uid="uid://6iqp624oul65" path="res://Themes/DefaultSmall.tres" id="6_rih6n"]
 [ext_resource type="Theme" uid="uid://c1m7qt4i4yj6k" path="res://Themes/Default.tres" id="6_uiuhc"]
 [ext_resource type="Texture2D" uid="uid://bim2wtt8bnpol" path="res://Textures/kenney_prototype-textures/PNG/Red/texture_01.png" id="6_w4k5y"]
 
@@ -75,7 +76,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6933, 2.88201, -24.0359)
 [node name="LevelUI" type="CanvasLayer" parent="."]
 
 [node name="UITab" type="Control" parent="LevelUI"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -113,6 +113,13 @@ text = "Loading Simulation..."
 libraries = {
 "": SubResource("AnimationLibrary_5ddcr")
 }
+
+[node name="TimesShot" type="Label" parent="LevelUI/UITab"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("6_rih6n")
+text = "Times Shot: 0"
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
