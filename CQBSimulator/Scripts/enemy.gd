@@ -5,7 +5,7 @@ extends Node3D
 @onready var animationPlayer = $AnimationPlayer
 # Called when the node enters the scene tree for the first time.
 
-
+#rotate gun by 8 degrees down if crouching
 var health = 100
 
 func _ready():

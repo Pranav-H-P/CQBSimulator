@@ -7,6 +7,7 @@ extends Node3D
 
 var door=preload("res://Nodes/Door.tscn")
 var genericCube=preload("res://Nodes/GenericCube.tscn")
+var spawner=preload("res://Nodes/Spawner.tscn")
 
 var wallHeight=7
 var coverHeight=1.5
@@ -17,6 +18,25 @@ var ts=0
 func updateShot():
 	timesShot.text="Times Shot: "+str(ts)
 
+func getEnemyTypes(enemyData):
+	var enemies=[]
+	var totalEnemyCount=0
+	for i in enemyData:
+		totalEnemyCount+=i[1]
+	
+	var enemyCount=GLOBALS.RNG.randi_range(0,totalEnemyCount)
+	
+	for i in range(enemyCount):
+		var pick=GLOBALS.RNG.randi_range(0,len(enemyData)-1)
+		enemies.append(enemyData[pick][0])
+		enemyData[pick][1]-=1
+		if enemyData[pick][1]<=0:
+			enemyData.remove_at(pick)
+		
+	return enemies
+	
+	
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -25,6 +45,8 @@ func _ready():
 	levelData=GLOBALS.getCurrLevelData()
 	
 	mapData=levelData["MapData"]
+	
+	
 	
 	
 	player.weaponData=levelData["PlayerData"]
@@ -98,6 +120,46 @@ func _ready():
 	player.position=Vector3(playerStart[0],3,playerStart[1])
 	player.initialWeaponSetup(player.weaponData["Bullets"])
 	
+	var enemyData=levelData["EnemyData"]
+	var totalEnemyCount=0
+	for i in enemyData:
+		totalEnemyCount+=i[1]
+	"""
+	[
+		[weapon, count],
+		[weapon, count]
+	]
+	""" 
+	var spawnerList=[]
+	var spawnerData=mapData["enemy"]
+	
+	var obj
+	for i in spawnerData.values():
+		
+		obj=spawner.instantiate()
+		obj.position.x=i["startCoords"][0]
+		obj.position.z=i["startCoords"][1]
+		obj.xExtents=i["size"][0]
+		obj.zExtents=i["size"][1]
+		obj.enemyData=getEnemyTypes(enemyData)
+		
+		spawnerList.append(obj)
+		add_child(obj)
+	
+	if len(spawnerData)>0:
+		totalEnemyCount=0
+		for i in enemyData:
+			totalEnemyCount+=i[1]
+		if totalEnemyCount>0: #put remaining enemies in last spawner
+			var en=obj.enemyData
+			for i in enemyData:
+				for j in range(i[1]):
+					en.append(i[0])
+			obj.enemyData=en
+
+		for i in spawnerList:
+			i.activate()
+		
 	uiAnim.play("fadeOut")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
