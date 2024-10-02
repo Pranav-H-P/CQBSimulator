@@ -118,7 +118,6 @@ bone_idx = 34
 
 [node name="Pistol_Full_West2" parent="Armature/Skeleton3D/righthand" index="0" instance=ExtResource("4_02yde")]
 transform = Transform3D(15.5427, 96.2433, 22.2632, 4.91087, 21.7564, -97.481, -98.6626, 16.2445, -1.34487, 4.96468, 12.0025, 2.40271)
-visible = false
 
 [node name="Rifle_Battle_West2" parent="Armature/Skeleton3D/righthand" index="1" instance=ExtResource("5_yu0gr")]
 transform = Transform3D(14.8703, 96.2433, 22.7179, 7.82267, 21.7564, -97.2906, -98.5783, 16.2445, -4.29359, 3.25519, 19.2201, 1.94936)

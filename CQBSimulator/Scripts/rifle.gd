@@ -208,7 +208,6 @@ func _physics_process(delta):
 
 func _on_reload_timer_timeout():
 	reloadEnd.play()
-	print("Reloading Weapon: ",wNo," magsize: ",magSize)
 	reloadTimer.wait_time=reloadTime+GLOBALS.RNG.randf_range(-0.1,0.1)
 	if parentName=="player":
 		var temp
