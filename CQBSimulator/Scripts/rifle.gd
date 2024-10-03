@@ -44,6 +44,7 @@ var defaultRotation
 
 var newBullet
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	switchTimer.wait_time=switchTime
@@ -64,10 +65,6 @@ func initialize(data,w=null,totalCount=null):
 	switching=true
 	$Rifle.visible=false
 	$Pistol.visible=false
-	
-	if parentName=="player":#its the player
-		wNo=w
-	
 	if totalCount!=null:
 		bTotalCount=totalCount
 	
@@ -103,6 +100,11 @@ func initialize(data,w=null,totalCount=null):
 	projSpeed=data["ProjSpeed"]
 	reloadTime=data["ReloadTime"]
 	volume=data["Volume"]
+
+	if parentName=="player":#its the player
+		wNo=w
+	else:
+		currMag=magSize
 
 	reloadTimer.wait_time=reloadTime+GLOBALS.RNG.randf_range(-0.1,0.1)
 

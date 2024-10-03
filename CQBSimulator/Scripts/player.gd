@@ -33,7 +33,8 @@ var breathNoise=2
 var walkNoise=10
 var runNoise=25
 var shootNoise=100
-var speedSound=340
+var speedSound=50
+var doorOpenNoise=25
 
 func _ready():
 	gun.parentName="player"
@@ -93,7 +94,7 @@ func _physics_process(delta):
 		var obj=interactRay.get_collider()
 		
 		if obj.is_in_group("door"):
-			
+			noiseLevel.scale=noiseLevel.scale.lerp(Vector3(doorOpenNoise,doorOpenNoise,doorOpenNoise),delta*speedSound)	
 			obj.get_parent().toggle()
 	
 	if not is_on_floor():
@@ -144,3 +145,9 @@ func _headbob(time) -> Vector3:
 	pos.y = sin(time * BOB_FREQ) * BOB_AMP
 	pos.x = cos(time * BOB_FREQ / 2) * BOB_AMP
 	return pos
+
+
+func _on_noise_level_area_entered(area):
+	if area.is_in_group("enemy"):
+		
+		area.alert()

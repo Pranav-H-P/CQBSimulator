@@ -40,3 +40,5 @@ transform = Transform3D(25, 0, 0, 0, 25, 0, 0, 0, 25, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="noiseLevel"]
 shape = SubResource("SphereShape3D_y0pl1")
+
+[connection signal="area_entered" from="noiseLevel" to="." method="_on_noise_level_area_entered"]
