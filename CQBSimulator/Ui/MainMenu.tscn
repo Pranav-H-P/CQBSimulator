@@ -115,6 +115,24 @@ text = "Map Settings"
 layout_mode = 2
 theme = ExtResource("3_6l7a7")
 
+[node name="HSeparator" type="HSeparator" parent="SimStart/HBox/MapData"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="TrainingLabel" type="Label" parent="SimStart/HBox/MapData"]
+layout_mode = 2
+theme = ExtResource("1_h72p8")
+theme_override_font_sizes/font_size = 70
+text = "Previous 
+Session"
+
+[node name="TrainingOptions" type="OptionButton" parent="SimStart/HBox/MapData"]
+layout_mode = 2
+theme = ExtResource("3_6l7a7")
+selected = 0
+item_count = 1
+popup/item_0/text = "New Session"
+
 [node name="VSeparator2" type="VSeparator" parent="SimStart/HBox"]
 layout_mode = 2
 theme_override_constants/separation = 30

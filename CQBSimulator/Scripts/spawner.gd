@@ -18,7 +18,6 @@ func returnFitnessValue(val,enemyId):
 	
 
 func activate():
-	print("spawner id: ",spawnerId,enemyData,positionArray)
 	var spawnX=global_position.x
 	var spawnZ=global_position.z
 	var count=0
@@ -42,7 +41,6 @@ func activate():
 			enem.global_position.z=positionArray[count][1]
 			enem.enemyId=count
 		else:
-			print("count: ",count)
 			#do stuff with position array etc for neat
 			enem.global_position.y=0.25;
 			enem.global_position.x=positionArray[count][0]

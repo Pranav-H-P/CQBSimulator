@@ -18,12 +18,16 @@ extends CanvasLayer
 @onready var smallTheme=preload("res://Themes/DefaultSmall.tres")
 @onready var bullets1=$SimStart/HBox/PlayerData/Bullets1/LineEdit
 @onready var bullets2=$SimStart/HBox/PlayerData/Bullets2/LineEdit
+@onready var trainingOptions=$SimStart/HBox/MapData/TrainingOptions
+
 
 var enemyTypeData=[]
 
 # Called when the node enters the scene tree for the first time.
 
 func _ready():
+	var splitArr=[]
+	var optionStr=""
 	main.visible=true
 	armory.visible=false
 	simStart.visible=false
@@ -34,6 +38,15 @@ func _ready():
 		playerWP1.add_item(i)
 		playerWP2.add_item(i)
 		enemyWP.add_item(i)
+	
+	for i in GLOBALS.loadTrainingData().keys():
+		splitArr=i.split("#")
+		optionStr=""
+		for j in splitArr:
+			optionStr+=j+"\n"
+		
+		optionStr.rstrip("\n")
+		trainingOptions.add_item(optionStr)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -71,13 +84,39 @@ func _on_sim_start_pressed():
 	var b1=bullets1.text.strip_edges()
 	var b2=bullets2.text.strip_edges()
 	
+	var trainingOp=trainingOptions.get_item_text(trainingOptions.get_selected_id())
+	
 	if len(b1)==0 or len(b2)==0 or !b1.is_valid_int() or !b2.is_valid_int():
 		return
-	
 	playerData["Weapon1"]=allWeaponDat[playerWP1.get_item_text(playerWP1.get_selected_id())]
 	playerData["Weapon2"]=allWeaponDat[playerWP2.get_item_text(playerWP2.get_selected_id())]
 	playerData["Bullets"]=[int(b1),int(b2)]
-	GLOBALS.setLevelData(mapOptions.get_item_text(mapOptions.get_selected_id()),playerData,enemyTypeData)
+	
+	if trainingOp=="New Session":
+		GLOBALS.currRound=1
+		GLOBALS.setLevelData(mapOptions.get_item_text(mapOptions.get_selected_id()),playerData,enemyTypeData)
+	
+	else:
+		var opArr=trainingOp.split("\n")
+		var newEnemyTypeData=[]
+		var mapName=opArr[0]
+		var spText=""
+		
+				
+		opArr.remove_at(0)
+		
+		for i in opArr:
+			spText=i.rsplit("-",true,1)
+			
+			if len(spText)!=2:
+				continue
+			newEnemyTypeData.append([spText[0],int(spText[1])])
+			
+		GLOBALS.currRound=2
+		GLOBALS.setLevelData(mapName,playerData,newEnemyTypeData)
+		
+	
+	
 	
 	get_tree().change_scene_to_file("res://Levels/TestLevel.tscn")
 
@@ -155,3 +194,4 @@ func _on_add_enemy_weapons_pressed():
 		enemyList.add_child(labl)
 		
 		enemyTypeData.append([enemyWP.get_item_text(enemyWP.get_selected_id()),int(t)])
+		print(enemyTypeData)
