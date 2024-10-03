@@ -5,7 +5,7 @@ const WALK_SPEED = 5.0
 const SPRINT_SPEED = 8.0
 const JUMP_VELOCITY = 4.8
 const SENSITIVITY = 0.004
-
+const SLOW_WALK_SPEED = 1
 const BOB_FREQ = 2.4
 const BOB_AMP = 0.03
 var t_bob = 0.0
@@ -31,6 +31,7 @@ var adsSpeed=30
 
 var breathNoise=2
 var walkNoise=10
+var slowWalkNoise=1
 var runNoise=25
 var shootNoise=100
 var speedSound=50
@@ -110,12 +111,16 @@ func _physics_process(delta):
 	if Input.is_action_pressed("leftshift"):
 		
 		speed = SPRINT_SPEED
+	elif Input.is_action_pressed("ctrl"):
+		speed = SLOW_WALK_SPEED
 	else:
 		speed = WALK_SPEED
 	if is_on_floor():
 		if direction:
 			if speed == SPRINT_SPEED:
 				noiseLevel.scale=noiseLevel.scale.lerp(Vector3(runNoise,runNoise,runNoise),delta*speedSound)
+			elif speed==SLOW_WALK_SPEED:
+				noiseLevel.scale=noiseLevel.scale.lerp(Vector3(slowWalkNoise,slowWalkNoise,slowWalkNoise),delta*speedSound)
 			else:
 				noiseLevel.scale=noiseLevel.scale.lerp(Vector3(walkNoise,walkNoise,walkNoise),delta*speedSound)
 				
