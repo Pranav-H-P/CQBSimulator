@@ -16,7 +16,7 @@ func activate():
 	for i in enemyData:
 		var enem = enemy.instantiate()
 		spawnedList.append(enem)
-		get_parent().add_child(enem)
+		add_child(enem)
 		
 		enem.enemySetup(i)
 		

@@ -26,8 +26,14 @@ var adsSpeed=30
 @onready var camera = $Head/Camera3D
 @onready var interactRay=$Head/Camera3D/interactionRay
 @onready var gun=$Head/Camera3D/Rifle
-
+@onready var noiseLevel=$noiseLevel
 @onready var gunHipPos=Vector3(0.562,-0.313,-0.554)
+
+var breathNoise=2
+var walkNoise=10
+var runNoise=25
+var shootNoise=100
+var speedSound=340
 
 func _ready():
 	gun.parentName="player"
@@ -45,12 +51,13 @@ func initialWeaponSetup(bCount):
 	gun.initialize(weaponData["Weapon1"],0,bCount)
 
 func _physics_process(delta):
-	
+	noiseLevel.scale=noiseLevel.scale.lerp(Vector3(breathNoise,breathNoise,breathNoise),delta*speedSound)
 	if Input.is_action_just_pressed('r'):
 		gun.reload()
 	
 	if Input.is_action_pressed("rightClick"):
 		gun.position=gun.position.lerp(gunADSPos,delta*adsSpeed)
+		
 	else:
 		gun.position=gun.position.lerp(gunHipPos,delta*adsSpeed)
 	
@@ -74,7 +81,7 @@ func _physics_process(delta):
 		
 	
 	if Input.is_action_just_pressed('leftClick'):
-		print("currMag: ",gun.bCurrCount)
+		noiseLevel.scale=noiseLevel.scale.lerp(Vector3(shootNoise,shootNoise,shootNoise),delta*speedSound)
 		gun.triggerDown=true
 	if Input.is_action_just_released('leftClick'):
 		gun.triggerDown=false
@@ -95,15 +102,22 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("space") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	
-	if Input.is_action_pressed("leftshift"):
-		speed = SPRINT_SPEED
-	else:
-		speed = WALK_SPEED
+	
 
 	var input_dir = Input.get_vector("a", "d", "w", "s")
 	var direction = (head.transform.basis * transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if Input.is_action_pressed("leftshift"):
+		
+		speed = SPRINT_SPEED
+	else:
+		speed = WALK_SPEED
 	if is_on_floor():
 		if direction:
+			if speed == SPRINT_SPEED:
+				noiseLevel.scale=noiseLevel.scale.lerp(Vector3(runNoise,runNoise,runNoise),delta*speedSound)
+			else:
+				noiseLevel.scale=noiseLevel.scale.lerp(Vector3(walkNoise,walkNoise,walkNoise),delta*speedSound)
+				
 			velocity.x = direction.x * speed
 			velocity.z = direction.z * speed
 		else:
