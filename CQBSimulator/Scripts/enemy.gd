@@ -14,6 +14,7 @@ extends Node3D
 @onready var sight5=$sight5
 @onready var parentSpawner=get_parent()
 @onready var world=get_parent().get_parent()
+@onready var fireTimer=$FireTimer
 
 var state = 0 # 0 is idle, 1 is player found
 var alert=false
@@ -26,7 +27,7 @@ var enemyId
 var health = 100
 var lookPos
 var coll
-
+var gunData
 
 func hitPlayer():
 	world.playerShot()
@@ -39,7 +40,7 @@ func enemySetup(gunName):
 	rifleModel.visible=false
 	pistolModel.visible=false
 	
-	var gunData=GLOBALS.loadGunData()[gunName]
+	gunData=GLOBALS.loadGunData()[gunName]
 	gun.initialize(gunData)
 	gun.enemyParent=self
 	gun.parentName="enemy"
@@ -47,7 +48,7 @@ func enemySetup(gunName):
 		rifleModel.visible=true
 	else:
 		pistolModel.visible=true
-	
+	fireTimer.wait_time=60/gunData["FireRate"]
 	
 		
 	
@@ -72,13 +73,25 @@ func _physics_process(delta):
 		lookPos.y=0
 		look_at(lookPos)
 		if sight1.is_colliding():
-			if sight1.get_collider().is_in_group("player") and gun.currMag!=0:
-				gun.triggerDown=true
-				
+			if gunData["FireOptions"]=="Automatic":
+				if sight1.get_collider().is_in_group("player") and gun.currMag!=0:
+					gun.triggerDown=true
+					
+				else:
+					gun.triggerDown=false
+			
 			else:
-				gun.triggerDown=false
+				if sight1.get_collider().is_in_group("player") and gun.currMag!=0 and fireTimer.is_stopped():
+					gun.triggerDown=true
+					print("firing pistol")
+					fireTimer.start()
+				
+				
+				
 		else:
 			gun.triggerDown=false
+		
+			
 	else:
 		gun.triggerDown=false
 		
@@ -116,3 +129,7 @@ func _on_animation_player_current_animation_changed(name):
 	if name=="Armature|mixamo_com|Layer0":
 		parentSpawner.returnFitnessValue(playerHits,enemyId)
 		queue_free()
+
+
+func _on_fire_timer_timeout():
+	print("can fire again")

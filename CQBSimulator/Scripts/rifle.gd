@@ -149,8 +149,8 @@ func fire():
 					newBullet.vel=projSpeed
 					newBullet.mass=bulletMass
 					newBullet.fired=true
-			
-			if muzzle.get_collider().is_in_group("enemy"):
+			var bd=muzzle.get_collider()
+			if bd and bd.is_in_group("enemy"):
 				muzzle.get_collider().hit(bulletMass*projSpeed)
 			applyRecoil()
 			
@@ -187,8 +187,8 @@ func fire():
 					enemyParent
 					newBullet.mass=bulletMass
 					newBullet.fired=true
-			
-			if muzzle.get_collider().is_in_group("player"):
+			var bd=muzzle.get_collider()
+			if bd and bd.is_in_group("player"):
 				enemyParent.hitPlayer()
 			applyRecoil()
 			
