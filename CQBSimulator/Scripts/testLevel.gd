@@ -135,15 +135,21 @@ func _ready():
 	var spawnerData=mapData["enemy"]
 	
 	var obj
-	for i in spawnerData.values():
+	for i in spawnerData.keys():
+		var j=spawnerData[i]
 		
 		obj=spawner.instantiate()
-		obj.position.x=i["startCoords"][0]
-		obj.position.z=i["startCoords"][1]
-		obj.xExtents=i["size"][0]
-		obj.zExtents=i["size"][1]
-		obj.enemyData=getEnemyTypes(enemyData)
+		obj.spawnerId=i
+		obj.position.x=j["startCoords"][0]
+		obj.position.z=j["startCoords"][1]
+		obj.xExtents=j["size"][0]
+		obj.zExtents=j["size"][1]
 		
+		if GLOBALS.currRound==1:
+			obj.enemyData=getEnemyTypes(enemyData)
+		else:
+			obj.enemyData=GLOBALS.getSavedEnemyTypes(i)
+			obj.positionArray=GLOBALS.getLastPositionArray(i)#implement these two
 		spawnerList.append(obj)
 		add_child(obj)
 	

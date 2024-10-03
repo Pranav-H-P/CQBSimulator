@@ -6,7 +6,7 @@ var currPlayerData
 var currEnemyData
 
 var mapPath="user://mapData.save"
-
+var trainingSavePath="user://trainingData.save"
 var weaponPath="user://weapons.save"
 
 var currEnemyLoadName
@@ -71,10 +71,12 @@ func storeGunData(gunName,data):
 func getCurrLevelData():
 	return {
 		"MapData":loadMapData(currMapName),
-		"PlayerData":currPlayerData,
-		"EnemyData":currEnemyData
+		"PlayerData":currPlayerData.duplicate(true),
+		"EnemyData":currEnemyData.duplicate(true)
 		}
-	
+
+
+
 func _ready():
 	RNG= RandomNumberGenerator.new()
 	RNG.randomize()

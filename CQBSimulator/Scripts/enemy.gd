@@ -83,7 +83,7 @@ func _physics_process(delta):
 			else:
 				if sight1.get_collider().is_in_group("player") and gun.currMag!=0 and fireTimer.is_stopped():
 					gun.triggerDown=true
-					print("firing pistol")
+					
 					fireTimer.start()
 				
 				
@@ -129,7 +129,3 @@ func _on_animation_player_current_animation_changed(name):
 	if name=="Armature|mixamo_com|Layer0":
 		parentSpawner.returnFitnessValue(playerHits,enemyId)
 		queue_free()
-
-
-func _on_fire_timer_timeout():
-	print("can fire again")

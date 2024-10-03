@@ -323,4 +323,3 @@ one_shot = true
 
 [connection signal="current_animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]
 [connection signal="timeout" from="alertTimer" to="." method="_on_noise_alert_timer_timeout"]
-[connection signal="timeout" from="FireTimer" to="." method="_on_fire_timer_timeout"]
