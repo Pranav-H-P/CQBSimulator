@@ -4,6 +4,7 @@ extends Node3D
 @onready var uiAnim=$LevelUI/UITab/AnimationPlayer
 @onready var timesShot=$LevelUI/UITab/TimesShot
 @onready var player=$Player
+@onready var reloadTimer=$ReloadTimer
 
 var door=preload("res://Nodes/Door.tscn")
 var genericCube=preload("res://Nodes/GenericCube.tscn")
@@ -14,6 +15,18 @@ var coverHeight=1.5
 var levelData
 var mapData
 var shotCount=0
+var spawnerActive=9999
+
+var trainingData={}
+
+func spawnerDone(id,enemyList,positionArr):
+	print("done: ",id,enemyList,positionArr)
+	spawnerActive-=1
+	
+	trainingData[id]=[
+		enemyList.duplicate(true),
+		positionArr.duplicate(true)
+	]
 
 func playerShot():
 	shotCount+=1
@@ -40,7 +53,7 @@ func getEnemyTypes(enemyData):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	set_process(false)
 	loadingBlock.visible=true
 	
 	levelData=GLOBALS.getCurrLevelData()
@@ -135,7 +148,9 @@ func _ready():
 	var spawnerData=mapData["enemy"]
 	
 	var obj
+	spawnerActive=0
 	for i in spawnerData.keys():
+		spawnerActive+=1
 		var j=spawnerData[i]
 		
 		obj=spawner.instantiate()
@@ -150,30 +165,45 @@ func _ready():
 		else:
 			obj.enemyData=GLOBALS.getSavedEnemyTypes(i)
 			obj.positionArray=GLOBALS.getLastPositionArray(i)#implement these two
+			
 		spawnerList.append(obj)
 		add_child(obj)
 	
 	if len(spawnerData)>0:
-		totalEnemyCount=0
-		for i in enemyData:
-			totalEnemyCount+=i[1]
-		if totalEnemyCount>0: #put remaining enemies in last spawner
-			var en=obj.enemyData
+		if GLOBALS.currRound==1:
+			totalEnemyCount=0
 			for i in enemyData:
-				for j in range(i[1]):
-					en.append(i[0])
-			obj.enemyData=en
+				totalEnemyCount+=i[1]
+			if totalEnemyCount>0: #put remaining enemies in last spawner
+				var en=obj.enemyData
+				for i in enemyData:
+					for j in range(i[1]):
+						en.append(i[0])
+				obj.enemyData=en
 
 		for i in spawnerList:
 			i.activate()
 		
 	uiAnim.play("fadeOut")
+	set_process(true)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	
+	if spawnerActive<=0:
+		print("saving")
+		GLOBALS.currRound+=1
+		timesShot.text+=" Training Round finished, initiating next round...."
+		reloadTimer.start()
+		GLOBALS.storeTrainingData(trainingData)
+		set_process(false)
+		 #restart level with new data
 
 
 func _on_animation_player_current_animation_changed(name):
 	if name=="fadeOut":
 		loadingBlock.visible=false
+
+
+func _on_reload_timer_timeout():
+	get_tree().reload_current_scene()

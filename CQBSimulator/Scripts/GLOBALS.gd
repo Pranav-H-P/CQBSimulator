@@ -8,6 +8,21 @@ var currEnemyData
 var mapPath="user://mapData.save"
 var trainingSavePath="user://trainingData.save"
 var weaponPath="user://weapons.save"
+var levelId
+
+"""trainingData
+{
+	mapname#EnemyCounts:{
+		"0":[
+			[weaponList],
+			[PositionArr]
+		],
+		"1":....
+	}
+}
+
+
+"""
 
 var currEnemyLoadName
 
@@ -54,6 +69,10 @@ func appendMapData(mapName,data):
 
 func setLevelData(mapName,playerData,enemyData):
 	
+	levelId=mapName
+	for i in enemyData:
+		levelId+="#"+i[0]+"-"+str(i[1])
+	
 	currMapName=mapName
 	currPlayerData=playerData
 	currEnemyData=enemyData
@@ -74,8 +93,28 @@ func getCurrLevelData():
 		"PlayerData":currPlayerData.duplicate(true),
 		"EnemyData":currEnemyData.duplicate(true)
 		}
-
-
+		
+func loadTrainingData():
+	var trainingDat=readJson(trainingSavePath)
+	return trainingDat
+	
+func storeTrainingData(dat):
+	var trainingDat = loadTrainingData()
+	trainingDat[levelId]=dat
+	saveJson(trainingDat,trainingSavePath)
+	
+	
+func getSavedEnemyTypes(spawnerId):
+	
+	var trainingDat = loadTrainingData()
+	
+	return trainingDat[levelId][spawnerId][0]
+	
+func getLastPositionArray(spawnerId):
+	
+	var trainingDat = loadTrainingData()
+	
+	return trainingDat[levelId][spawnerId][1].duplicate(true)
 
 func _ready():
 	RNG= RandomNumberGenerator.new()

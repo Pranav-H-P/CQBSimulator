@@ -131,4 +131,8 @@ mesh = SubResource("BoxMesh_6ctrs")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("BoxShape3D_fd7a0")
 
+[node name="ReloadTimer" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="current_animation_changed" from="LevelUI/UITab/AnimationPlayer" to="." method="_on_animation_player_current_animation_changed"]
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

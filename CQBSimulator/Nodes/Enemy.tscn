@@ -177,6 +177,7 @@ transform = Transform3D(-93.7947, 31.5515, -14.3892, 33.742, 92.6104, -16.8755, 
 [node name="headArea" type="Area3D" parent="Armature/Skeleton3D/head" index="1" groups=["enemy"]]
 transform = Transform3D(1, 2.14204e-07, 0, 1.49012e-07, 1, -5.96046e-08, -5.96046e-08, 4.47035e-08, 1, 0.725315, 9.55963, 5.35535)
 script = ExtResource("6_cbsr7")
+damageFactor = 2.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/head/headArea" index="0"]
 shape = SubResource("CapsuleShape3D_m0on2")
@@ -200,6 +201,7 @@ bone_idx = 32
 
 [node name="upperArmRightArea" type="Area3D" parent="Armature/Skeleton3D/upperArmRight" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/upperArmRight/upperArmRightArea" index="0"]
 transform = Transform3D(0.999999, 0, -1.49012e-08, 3.35276e-08, 1, 1.92318e-07, 3.72529e-08, -4.09782e-08, 1, 0.534859, 7.8612, 1.00337)
@@ -212,6 +214,7 @@ bone_idx = 8
 
 [node name="upperArmLeftArea" type="Area3D" parent="Armature/Skeleton3D/upperArmLeft" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/upperArmLeft/upperArmLeftArea" index="0"]
 transform = Transform3D(0.973245, -0.19136, -0.127172, 0.194897, 0.980695, 0.015861, 0.121682, -0.0402218, 0.991753, 0.626633, 6.78848, 1.83237)
@@ -224,6 +227,7 @@ bone_idx = 33
 
 [node name="lowerArmRightArea" type="Area3D" parent="Armature/Skeleton3D/lowerArmRight" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/lowerArmRight/lowerArmRightArea" index="0"]
 transform = Transform3D(1, 0, 1.49012e-08, 0, 1, 2.98023e-08, 0, 0, 1, 0.455124, 15.1954, -0.03965)
@@ -236,6 +240,7 @@ bone_idx = 9
 
 [node name="lowerArmLeftArea" type="Area3D" parent="Armature/Skeleton3D/lowerArmLeft" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/lowerArmLeft/lowerArmLeftArea" index="0"]
 transform = Transform3D(0.999983, 0.00529736, 0.00246522, -0.00532272, 0.999931, 0.0104638, -0.0024097, -0.0104767, 0.999942, 0.224068, 12.6582, 0.200951)
@@ -248,6 +253,7 @@ bone_idx = 60
 
 [node name="upperLegRightArea" type="Area3D" parent="Armature/Skeleton3D/upperLegRight" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/upperLegRight/upperLegRightArea" index="0"]
 transform = Transform3D(0.999958, 0.00766164, 0.005098, -0.00743948, 0.999079, -0.0423014, -0.0054173, 0.0422609, 0.999093, -0.684204, 17.2114, -1.68569)
@@ -260,6 +266,7 @@ bone_idx = 55
 
 [node name="upperLegLeftArea" type="Area3D" parent="Armature/Skeleton3D/upperLegLeft" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/upperLegLeft/upperLegLeftArea" index="0"]
 transform = Transform3D(1, 0, -2.98023e-07, 0, 1, -2.08616e-07, -2.98023e-08, 0, 1, -1.3068, 20.2617, -2.65313)
@@ -272,6 +279,7 @@ bone_idx = 61
 
 [node name="lowerLegRightArea" type="Area3D" parent="Armature/Skeleton3D/lowerLegRight" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.25
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/lowerLegRight/lowerLegRightArea" index="0"]
 transform = Transform3D(1, 2.98023e-08, 7.45058e-08, 0, 1, 1.7602e-07, 4.84288e-08, -6.51926e-09, 1, -0.238188, 15.4053, 0.855664)
@@ -284,6 +292,7 @@ bone_idx = 56
 
 [node name="lowerLegLeftArea" type="Area3D" parent="Armature/Skeleton3D/lowerLegLeft" index="0" groups=["enemy"]]
 script = ExtResource("6_cbsr7")
+damageFactor = 0.25
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Armature/Skeleton3D/lowerLegLeft/lowerLegLeftArea" index="0"]
 transform = Transform3D(1, -4.23752e-08, 5.96046e-08, -3.95812e-08, 1, 6.51926e-09, 0, 4.65661e-09, 1, -0.118213, 17.3128, 0.8953)

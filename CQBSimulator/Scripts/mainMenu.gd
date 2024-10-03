@@ -78,6 +78,7 @@ func _on_sim_start_pressed():
 	playerData["Weapon2"]=allWeaponDat[playerWP2.get_item_text(playerWP2.get_selected_id())]
 	playerData["Bullets"]=[int(b1),int(b2)]
 	GLOBALS.setLevelData(mapOptions.get_item_text(mapOptions.get_selected_id()),playerData,enemyTypeData)
+	
 	get_tree().change_scene_to_file("res://Levels/TestLevel.tscn")
 
 

@@ -2,7 +2,7 @@ extends Area3D
 
 
 @onready var enemy=get_parent().get_parent().get_parent().get_parent()
-@export var damageFactor = 1
+@export var damageFactor = 1.0
 # Called when the node enters the scene tree for the first time.
 
 
@@ -22,7 +22,7 @@ func _process(delta):
 
 func hit(force):
 	print(force)
-	enemy.health-=(force*damageFactor)/100
+	enemy.health-=(force*damageFactor*damageFactor)/100
 
 func alert():
 	enemy.hearNoise()

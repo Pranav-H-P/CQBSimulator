@@ -111,7 +111,7 @@ func initialize(data,w=null,totalCount=null):
 func applyRecoil():
 	var factor=1
 	if parentName=="enemy":
-		factor=0.5
+		factor=0.25
 		
 	model.position.z+=GLOBALS.RNG.randf_range(0,(vRecoil/factor)/1000)
 	model.position.y+=GLOBALS.RNG.randf_range(0,(vRecoil/factor)/1000)
