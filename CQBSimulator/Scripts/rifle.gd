@@ -43,7 +43,7 @@ var defaultRotation
 @onready var switchTimer=$SwitchTimer
 
 var newBullet
-
+var enemyParent=null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -109,10 +109,14 @@ func initialize(data,w=null,totalCount=null):
 	reloadTimer.wait_time=reloadTime+GLOBALS.RNG.randf_range(-0.1,0.1)
 
 func applyRecoil():
-	model.position.z+=GLOBALS.RNG.randf_range(0,vRecoil/1000)
-	model.position.y+=GLOBALS.RNG.randf_range(0,vRecoil/1000)
-	model.rotation_degrees.y+=GLOBALS.RNG.randf_range(0,vRecoil)
-	model.rotation_degrees.x+=GLOBALS.RNG.randf_range(-hRecoil,hRecoil)
+	var factor=1
+	if parentName=="enemy":
+		factor=0.5
+		
+	model.position.z+=GLOBALS.RNG.randf_range(0,(vRecoil/factor)/1000)
+	model.position.y+=GLOBALS.RNG.randf_range(0,(vRecoil/factor)/1000)
+	model.rotation_degrees.y+=GLOBALS.RNG.randf_range(0,vRecoil/factor)
+	model.rotation_degrees.x+=GLOBALS.RNG.randf_range(-hRecoil/factor,hRecoil/factor)
 
 func fire():
 	
@@ -129,6 +133,7 @@ func fire():
 				newBullet.vel=projSpeed
 				newBullet.mass=bulletMass
 				newBullet.fired=true
+				
 			else:
 				var pelletSpread=muzzle.get_collision_point()
 				var dist=abs(muzzle.position.distance_to(pelletSpread))
@@ -144,7 +149,9 @@ func fire():
 					newBullet.vel=projSpeed
 					newBullet.mass=bulletMass
 					newBullet.fired=true
-					
+			
+			if muzzle.get_collider().is_in_group("enemy"):
+				muzzle.get_collider().hit(bulletMass*projSpeed)
 			applyRecoil()
 			
 			gunShot.play()
@@ -160,7 +167,9 @@ func fire():
 				newBullet.global_position=muzzle.global_position
 				newBullet.look_at(muzzle.get_collision_point(),Vector3.UP)
 				newBullet.vel=projSpeed
+				newBullet.enemyParent=enemyParent
 				newBullet.mass=bulletMass
+				
 				newBullet.fired=true
 			else:
 				var pelletSpread=muzzle.get_collision_point()
@@ -175,9 +184,12 @@ func fire():
 					pelletSpread.x+=GLOBALS.RNG.randf_range(-dist*(tan(deg_to_rad(hSpread))),dist*(tan(deg_to_rad(hSpread))))
 					newBullet.look_at(pelletSpread,Vector3.UP)
 					newBullet.vel=projSpeed
+					enemyParent
 					newBullet.mass=bulletMass
 					newBullet.fired=true
-					
+			
+			if muzzle.get_collider().is_in_group("player"):
+				enemyParent.hitPlayer()
 			applyRecoil()
 			
 			gunShot.play()

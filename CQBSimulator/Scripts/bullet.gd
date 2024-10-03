@@ -3,6 +3,7 @@ extends RigidBody3D
 var avoid
 var vel
 var fired=false
+var enemyParent=null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	top_level=true
@@ -18,10 +19,13 @@ func _physics_process(delta):
 
 
 func _on_area_3d_body_entered(body):
-	
-	
-	if !body.is_in_group(avoid):
-		
-		if body.is_in_group("player"):
-			pass
+			
+	$Timer.start()
+
+
+func _on_area_3d_area_entered(area):
+	$Timer.start()
+
+
+func _on_timer_timeout():
 	queue_free()

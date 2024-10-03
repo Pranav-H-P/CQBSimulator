@@ -12,16 +12,25 @@ extends Node3D
 @onready var sight3=$sight3
 @onready var sight4=$sight4
 @onready var sight5=$sight5
+@onready var parentSpawner=get_parent()
+@onready var world=get_parent().get_parent()
 
 var state = 0 # 0 is idle, 1 is player found
 var alert=false
 var gunName=""
+var playerHits=0
+var enemyId
 # Called when the node enters the scene tree for the first time.
 
 #rotate gun by 8 degrees down if crouching
 var health = 100
 var lookPos
 var coll
+
+
+func hitPlayer():
+	world.playerShot()
+	playerHits+=1
 
 func enemySetup(gunName):
 	
@@ -32,6 +41,7 @@ func enemySetup(gunName):
 	
 	var gunData=GLOBALS.loadGunData()[gunName]
 	gun.initialize(gunData)
+	gun.enemyParent=self
 	gun.parentName="enemy"
 	if gunData["ModelOptions"]=="Rifle":
 		rifleModel.visible=true
@@ -64,6 +74,7 @@ func _physics_process(delta):
 		if sight1.is_colliding():
 			if sight1.get_collider().is_in_group("player") and gun.currMag!=0:
 				gun.triggerDown=true
+				
 			else:
 				gun.triggerDown=false
 		else:
@@ -103,4 +114,5 @@ func _on_noise_alert_timer_timeout():
 
 func _on_animation_player_current_animation_changed(name):
 	if name=="Armature|mixamo_com|Layer0":
+		parentSpawner.returnFitnessValue(playerHits,enemyId)
 		queue_free()

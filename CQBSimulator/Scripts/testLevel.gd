@@ -13,10 +13,11 @@ var wallHeight=7
 var coverHeight=1.5
 var levelData
 var mapData
-var ts=0
+var shotCount=0
 
-func updateShot():
-	timesShot.text="Times Shot: "+str(ts)
+func playerShot():
+	shotCount+=1
+	timesShot.text="Times Shot: "+str(shotCount)
 
 func getEnemyTypes(enemyData):
 	var enemies=[]

@@ -11,6 +11,8 @@ var weaponPath="user://weapons.save"
 
 var currEnemyLoadName
 
+var currRound=1
+
 func saveJson(content,path):
 	
 	var file = FileAccess.open(path,FileAccess.WRITE)

@@ -7,12 +7,20 @@ var enemyData=[]
 
 var spawnedList=[]
 
+var alive=99999
+
 const enemy = preload("res://Nodes/Enemy.tscn")
+
+func returnFitnessValue(val,enemyId):
+	pass
 
 func activate():
 	var spawnX=global_position.x
 	var spawnZ=global_position.z
-	
+	var count=0
+	if len(enemyData)==0:
+		queue_free()
+		
 	for i in enemyData:
 		var enem = enemy.instantiate()
 		spawnedList.append(enem)
@@ -20,10 +28,18 @@ func activate():
 		
 		enem.enemySetup(i)
 		
-		#replace with neat round
-		enem.global_position.y=0.25;
-		enem.global_position.x=GLOBALS.RNG.randi_range(spawnX,spawnX+xExtents)
-		enem.global_position.z=GLOBALS.RNG.randi_range(spawnZ,spawnZ+zExtents)
+		
+		if GLOBALS.currRound==1:
+			enem.global_position.y=0.25;
+			enem.global_position.x=GLOBALS.RNG.randi_range(spawnX,spawnX+xExtents)
+			enem.global_position.z=GLOBALS.RNG.randi_range(spawnZ,spawnZ+zExtents)
+			enem.enemyId=count
+		else:
+			pass#replace with neat round
+		count+=1
+
+func roundEnd():
+	pass
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,4 +48,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if alive==0:
+		roundEnd()
+		#add saving feature
+		set_process(false)
